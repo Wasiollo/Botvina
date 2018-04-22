@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui\
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,10 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         src/main.cpp \
-        src/mainwindow.cpp
+        src/mainwindow.cpp \
+    src/Lexer.cpp \
+    src/Input.cpp
 
 HEADERS += \
-        include/mainwindow.h
+        include/mainwindow.h \
+    include/Token.hpp \
+    include/Input.hpp \
+    include/Lexer.hpp
 
 FORMS += \
         forms/mainwindow.ui

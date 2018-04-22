@@ -9,7 +9,6 @@ extern template struct trompeloeil::reporter<trompeloeil::specialized>;
 
 TEST_CASE("Application Tests", "[app]")
 {
-
     SECTION("Hello World") {
         REQUIRE(true);
     }
