@@ -24,6 +24,7 @@ PROJECT_HEADERS = \
     $$PROJECT_DIR/include/Token.hpp
 
 
+
 SOURCES +=  \
     tst_apptests.cpp \
     main.cpp\
