@@ -3,7 +3,7 @@
 #include "include/Input.hpp"
 #include "catch.hpp"
 
-TEST_CASE( "input is read", "[input]" )
+TEST_CASE( "INPUT TESTS" )
 {
   std::istringstream iss("abc def;l.p!,");
   botvina::Input input(iss);

@@ -5,435 +5,504 @@
 
 using namespace botvina;
 
-TEST_CASE( "tokens are scanned", "[lexer]" ) {
-  using TokType = botvina::Token::Type;
+TEST_CASE( "LEXER TESTS" ) {
 
   std::istringstream iss;
-  Token t = Token::Unknown();
+  Token token = Token::Unknown();
   Lexer lexer(iss);
 
   SECTION( "identifiers" ) {
-    iss.str("a a1 a_ _ _a _1 _a_ _1_ 1a");
+    iss.str("ala ma1 kota_ _ _a _1kot _ma_ _1_ 1ale");
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "a" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "ala" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "a1" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "ma1" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "a_" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "kota_" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "_" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "_" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "_a" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "_a" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "_1" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "_1kot" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "_a_" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "_ma_" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "_1_" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "_1_" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::INT );
-    REQUIRE( t.str == "1" );
-    REQUIRE( t.value.integer == 1 );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::INT );
+    REQUIRE( token.str == "1" );
+    REQUIRE( token.value.integer == 1 );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::IDN );
-    REQUIRE( t.str == "a" );
-  } // identifiers
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::IDN );
+    REQUIRE( token.str == "ale" );
+  }
 
-  SECTION( "integers" ) {
+  SECTION( "Integers" ) {
     SECTION( "positive" ) {
-      iss.str("128");
+      iss.str("123456");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::INT );
-      REQUIRE( t.str == "128" );
-      REQUIRE( t.value.integer == 128 );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::INT );
+      REQUIRE( token.str == "123456" );
+      REQUIRE( token.value.integer == 123456 );
     }
 
     SECTION( "negative" ) {
-      iss.str("-512");
+      iss.str("-7546321");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::INT );
-      REQUIRE( t.str == "-512" );
-      REQUIRE( t.value.integer == -512 );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::INT );
+      REQUIRE( token.str == "-7546321" );
+      REQUIRE( token.value.integer == -7546321 );
     }
 
     SECTION( "zero" ) {
       iss.str("0");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::INT );
-      REQUIRE( t.str == "0" );
-      REQUIRE( t.value.integer == 0 );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::INT );
+      REQUIRE( token.str == "0" );
+      REQUIRE( token.value.integer == 0 );
     }
+  }
 
-    SECTION( "\"minus zero\" corner case" ) {
-      iss.str("-0");
-
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::ADD_OP );
-      REQUIRE( t.str == "-" );
-      REQUIRE( t.value.addType == AddOpType::SUB );
-
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::INT );
-      REQUIRE( t.str == "0" );
-      REQUIRE( t.value.integer == 0 );
-    }
-  } //integers
-
-  SECTION( "special strings" ) {
+  SECTION( "FUNCTIONS AND BOOLEAN" ) {
     iss.str("func draw move return True False");
 
     SECTION( "func" ) {
       iss.str("func");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::FUN );
-      REQUIRE( t.str == "func" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::FUN );
+      REQUIRE( token.str == "func" );
     }
 
     SECTION( "draw" ) {
       iss.str("draw");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::DRAW_OP );
-      REQUIRE( t.str == "draw" );
-      REQUIRE( t.value.basicType == BasicFuncOpType::DRAW);
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BASIC_FUNC );
+      REQUIRE( token.str == "draw" );
+      REQUIRE( token.value.basicType == BasicFuncOpType::DRAW);
     }
 
     SECTION( "move" ) {
       iss.str("move");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::MOVE_OP );
-      REQUIRE( t.str == "move" );
-      REQUIRE( t.value.basicType == BasicFuncOpType::MOVE );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BASIC_FUNC );
+      REQUIRE( token.str == "move" );
+      REQUIRE( token.value.basicType == BasicFuncOpType::MOVE );
     }
 
     SECTION( "return" ) {
       iss.str("return");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::RET );
-      REQUIRE( t.str == "return" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::RET );
+      REQUIRE( token.str == "return" );
     }
 
     SECTION( "True" ) {
       iss.str("True");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::BLN );
-      REQUIRE( t.str == "True" );
-      REQUIRE( t.value.boolean == true );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BLN );
+      REQUIRE( token.str == "True" );
+      REQUIRE( token.value.boolean == true );
     }
 
     SECTION( "False" ) {
       iss.str("False");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::BLN );
-      REQUIRE( t.str == "False" );
-      REQUIRE( t.value.boolean == false );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BLN );
+      REQUIRE( token.str == "False" );
+      REQUIRE( token.value.boolean == false );
     }
-  } // special strings
+  }
 
-  SECTION( "matemathical operators" ) {
+  SECTION( "MATHEMATICA OPERATIONS" ) {
     SECTION( "greater than" ) {
       iss.str(">");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::REL_OP );
-      REQUIRE( t.str == ">" );
-      REQUIRE( t.value.relType == RelOpType::GT );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::REL_OP );
+      REQUIRE( token.str == ">" );
+      REQUIRE( token.value.relType == RelOpType::GT );
     }
 
     SECTION( "greater or equal" ) {
       iss.str(">=");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::REL_OP );
-      REQUIRE( t.str == ">=" );
-      REQUIRE( t.value.relType == RelOpType::GE );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::REL_OP );
+      REQUIRE( token.str == ">=" );
+      REQUIRE( token.value.relType == RelOpType::GE );
     }
 
     SECTION( "less than" ) {
       iss.str("<");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::REL_OP );
-      REQUIRE( t.str == "<" );
-      REQUIRE( t.value.relType == RelOpType::LT );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::REL_OP );
+      REQUIRE( token.str == "<" );
+      REQUIRE( token.value.relType == RelOpType::LT );
     }
 
     SECTION( "less or equal" ) {
       iss.str("<=");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::REL_OP );
-      REQUIRE( t.str == "<=" );
-      REQUIRE( t.value.relType == RelOpType::LE );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::REL_OP );
+      REQUIRE( token.str == "<=" );
+      REQUIRE( token.value.relType == RelOpType::LE );
     }
 
     SECTION( "and" ) {
       iss.str("&&");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::AND );
-      REQUIRE( t.str == "&&" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::AND );
+      REQUIRE( token.str == "&&" );
     }
 
     SECTION( "or" ) {
       iss.str("||");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::OR );
-      REQUIRE( t.str == "||" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::OR );
+      REQUIRE( token.str == "||" );
     }
 
     SECTION( "assign" ) {
       iss.str("=");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::ASN );
-      REQUIRE( t.str == "=" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::ASSIGN );
+      REQUIRE( token.str == "=" );
     }
 
     SECTION( "equal" ) {
       iss.str("==");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::EQ_OP );
-      REQUIRE( t.str == "==" );
-      REQUIRE( t.value.eqType == EqOpType::EQU );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::EQUAL_OP );
+      REQUIRE( token.str == "==" );
+      REQUIRE( token.value.eqType == EqualOpType::EQU );
     }
 
     SECTION( "not" ) {
       iss.str("!");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::NOT );
-      REQUIRE( t.str == "!" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::NOT );
+      REQUIRE( token.str == "!" );
     }
 
     SECTION( "not equal" ) {
       iss.str("!=");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::EQ_OP );
-      REQUIRE( t.str == "!=" );
-      REQUIRE( t.value.eqType == EqOpType::NEQ );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::EQUAL_OP );
+      REQUIRE( token.str == "!=" );
+      REQUIRE( token.value.eqType == EqualOpType::NEQ );
     }
 
     SECTION( "add" ) {
       iss.str("+");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::ADD_OP );
-      REQUIRE( t.str == "+" );
-      REQUIRE( t.value.addType == AddOpType::ADD );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::ADD_OP );
+      REQUIRE( token.str == "+" );
+      REQUIRE( token.value.addType == AddOpType::ADD );
     }
 
     SECTION( "subtract" ) {
       iss.str("-");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::ADD_OP );
-      REQUIRE( t.str == "-" );
-      REQUIRE( t.value.addType == AddOpType::SUB );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::ADD_OP );
+      REQUIRE( token.str == "-" );
+      REQUIRE( token.value.addType == AddOpType::SUB );
     }
 
     SECTION( "multiply" ) {
       iss.str("*");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::MUL_OP );
-      REQUIRE( t.str == "*" );
-      REQUIRE( t.value.mulType == MulOpType::MUL );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::MUL_OP );
+      REQUIRE( token.str == "*" );
+      REQUIRE( token.value.mulType == MulOpType::MUL );
     }
 
     SECTION( "divide" ) {
       iss.str("/");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::MUL_OP );
-      REQUIRE( t.str == "/" );
-      REQUIRE( t.value.mulType == MulOpType::DIV );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::MUL_OP );
+      REQUIRE( token.str == "/" );
+      REQUIRE( token.value.mulType == MulOpType::DIV );
     }
 
     SECTION( "modulo" ) {
       iss.str("%");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::MUL_OP );
-      REQUIRE( t.str == "%" );
-      REQUIRE( t.value.mulType == MulOpType::MOD );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::MUL_OP );
+      REQUIRE( token.str == "%" );
+      REQUIRE( token.value.mulType == MulOpType::MOD );
     }
-  } // operators
+  }
 
   SECTION( "other" ) {
-    SECTION( "curly brackets" ) {
+    SECTION( "set brackets" ) {
       iss.str("{}");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::SET_BRACK_OP );
-      REQUIRE( t.str == "{" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::SET_BRACK_OP );
+      REQUIRE( token.str == "{" );
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::SET_BRACK_CL );
-      REQUIRE( t.str == "}" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::SET_BRACK_CL );
+      REQUIRE( token.str == "}" );
     }
 
     SECTION( "round brackets" ) {
       iss.str("()");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::RND_OP );
-      REQUIRE( t.str == "(" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::RND_BRACK_OP );
+      REQUIRE( token.str == "(" );
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::RND_CL );
-      REQUIRE( t.str == ")" );
-    }
-
-    SECTION( "dot" ) {
-      iss.str(".");
-
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::DOT );
-      REQUIRE( t.str == "." );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::RND_BRACK_CL );
+      REQUIRE( token.str == ")" );
     }
 
     SECTION( "comma" ) {
       iss.str(",");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::CMM );
-      REQUIRE( t.str == "," );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::CMM );
+      REQUIRE( token.str == "," );
     }
 
     SECTION( "semicolon" ) {
       iss.str(";");
 
-      t = lexer.getToken();
-      REQUIRE( t.type == TokType::SCL );
-      REQUIRE( t.str == ";" );
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::SCL );
+      REQUIRE( token.str == ";" );
     }
-  } // other
+  }
+
+  SECTION( "geometric primitives" ){
+      SECTION( "circle" ) {
+        iss.str("circle");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::PRIMITIVE_FIGURE );
+        REQUIRE( token.str == "circle" );
+        REQUIRE( token.value.primitiveType == PrimitiveType::CIRCLE );
+      }
+
+      SECTION( "quadrangle" ) {
+        iss.str("quadrangle");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::PRIMITIVE_FIGURE );
+        REQUIRE( token.str == "quadrangle" );
+        REQUIRE( token.value.primitiveType == PrimitiveType::QUADRANGLE );
+      }
+
+      SECTION( "line" ) {
+        iss.str("line");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::PRIMITIVE_FIGURE );
+        REQUIRE( token.str == "line" );
+        REQUIRE( token.value.primitiveType == PrimitiveType::LINE );
+      }
+
+      SECTION( "point" ) {
+        iss.str("point");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::PRIMITIVE_FIGURE );
+        REQUIRE( token.str == "point" );
+        REQUIRE( token.value.primitiveType == PrimitiveType::POINT );
+      }
+  }
+
+  SECTION( "colors" ){
+      SECTION( "black" ) {
+        iss.str("black");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::COLOR_TYPE );
+        REQUIRE( token.str == "black" );
+        REQUIRE( token.value.colorType == ColorType::BLACK );
+      }
+
+      SECTION( "red" ) {
+        iss.str("red");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::COLOR_TYPE );
+        REQUIRE( token.str == "red" );
+        REQUIRE( token.value.colorType == ColorType::RED );
+      }
+
+      SECTION( "blue" ) {
+        iss.str("blue");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::COLOR_TYPE );
+        REQUIRE( token.str == "blue" );
+        REQUIRE( token.value.colorType == ColorType::BLUE );
+      }
+
+      SECTION( "green" ) {
+        iss.str("green");
+
+        token = lexer.getNextToken();
+        REQUIRE( token.type == Token::Type::COLOR_TYPE );
+        REQUIRE( token.str == "green" );
+        REQUIRE( token.value.colorType == ColorType::GREEN );
+      }
+  }
+
+
 
   SECTION( "invalid symbols" ) {
-    iss.str("$ @ # ^ ' \" | & \\ ? ` ~ : [ ]");
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "$" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "@" );
+    iss.str("$ @ # ^ ' \" | & \\ ? ` ~ : [ ] .");
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "#" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "$" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "^" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "@" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "'" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "#" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "\"" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "^" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "|" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "'" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "&" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "\"" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "\\" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "|" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "?" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "&" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "`" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "\\" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "~" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "?" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == ":" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "`" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "[" );
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "~" );
 
-    t = lexer.getToken();
-    REQUIRE( t.type == TokType::UNKNOWN );
-    REQUIRE( t.str == "]");
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == ":" );
 
-  } // invalid symbols
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "[" );
+
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == "]");
+
+    token = lexer.getNextToken();
+    REQUIRE( token.type == Token::Type::UNKNOWN );
+    REQUIRE( token.str == ".");
+
+  }
 }
 
-TEST_CASE( "exception is thrown when identifier too long", "[lexer]" ) {
-  std::string s(BOTVINA_MAX_IDENTIFIER_LENGTH + 1, 'a');
+TEST_CASE( "TRACKING POSITION" ) {
+  std::istringstream iss("abcde 12 asd\n"
+                         "cde fgh jkajnsdkjasn");
+
+  Lexer lexer(iss);
+  Token token = Token::Unknown();
+
+  token = lexer.getNextToken();
+  REQUIRE( token.pos.line == 1 );
+  REQUIRE( token.pos.column == 0 );
+
+  token = lexer.getNextToken();
+  REQUIRE( token.pos.line == 1 );
+  REQUIRE( token.pos.column == 6 );
+
+  token = lexer.getNextToken();
+  REQUIRE( token.pos.line == 1 );
+  REQUIRE( token.pos.column == 9 );
+
+  token = lexer.getNextToken();
+  REQUIRE( token.pos.line == 2 );
+  REQUIRE( token.pos.column == 0 );
+
+  token = lexer.getNextToken();
+  REQUIRE( token.pos.line == 2 );
+  REQUIRE( token.pos.column == 4 );
+
+  token = lexer.getNextToken();
+  REQUIRE( token.pos.line == 2 );
+  REQUIRE( token.pos.column == 8 );
+}
+
+TEST_CASE( "EXCEPTION - IDENTIFIER TOO LONG" ) {
+  std::string s(BOTVINA_MAX_IDENTIFIER_LENGTH + 1, 'p');
   std::istringstream iss(s);
 
   Lexer lexer(iss);
 
-  REQUIRE_THROWS( lexer.getToken() );
-}
-
-TEST_CASE( "file position is tracked", "[lexer]" ) {
-  std::istringstream iss("ab 12\n"
-                         "cde fgh");
-
-  Lexer lexer(iss);
-  Token t = Token::Unknown();
-
-  t = lexer.getToken();
-  REQUIRE( t.pos.line == 1 );
-  REQUIRE( t.pos.col == 0 );
-
-  t = lexer.getToken();
-  REQUIRE( t.pos.line == 1 );
-  REQUIRE( t.pos.col == 3 );
-
-  t = lexer.getToken();
-  REQUIRE( t.pos.line == 2 );
-  REQUIRE( t.pos.col == 0 );
-
-  t = lexer.getToken();
-  REQUIRE( t.pos.line == 2 );
-  REQUIRE( t.pos.col == 4 );
+  REQUIRE_THROWS( lexer.getNextToken() );
 }

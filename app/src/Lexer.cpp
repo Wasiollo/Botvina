@@ -2,6 +2,7 @@
 
 #include <cctype>
 #include <cstdlib>
+#include <cstring>
 
 #include <stdexcept>
 
@@ -10,7 +11,7 @@ using namespace botvina;
 using Type = Token::Type;
 
 Lexer::Lexer(std::istream& in)
-  : input_(in),
+  : input(in),
     lastChar(' '),
     lexerPosition(1, -1),
     currentToken(Token::Unknown()) {
@@ -18,14 +19,14 @@ Lexer::Lexer(std::istream& in)
 
 void Lexer::processNextChar() {
   if(lastChar == '\n') {
-    lexerPosition.col = 0;
+    lexerPosition.column = 0;
     ++lexerPosition.line;
   }
 
   else
-    ++lexerPosition.col;
+    ++lexerPosition.column;
 
-  lastChar = input_.getNextChar();
+  lastChar = input.getNextChar();
 }
 
 void Lexer::saveNextChar() {
@@ -33,29 +34,29 @@ void Lexer::saveNextChar() {
   processNextChar();
 }
 
-Token Lexer::getToken() {
-  Token ret = Token::Unknown();
+Token Lexer::getNextToken() {
+  Token resultToken = Token::Unknown();
 
   ignoreWhiteSpace();
   Position pos = lexerPosition;
 
-  if( (ret = tryIdentifier()).isValid() )
+  if( (resultToken = tryIdentifier()).isValid() )
     ;
-  else if( (ret = tryInteger()).isValid() )
+  else if( (resultToken = tryInteger()).isValid() )
     ;
-  else if( (ret = tryOperator()).isValid() )
+  else if( (resultToken = tryOperator()).isValid() )
     ;
-  else if( (ret = tryOther()).isValid() )
+  else if( (resultToken = tryOther()).isValid() )
     ;
   else {
     //invalid symbol
     saveNextChar();
-    ret.str = tokenBuffer;
+    resultToken.str = tokenBuffer;
   }
 
-  ret.setPos(pos);
+  resultToken.setPos(pos);
   tokenBuffer.clear();
-  return currentToken = ret;
+  return currentToken = resultToken;
 }
 
 Token Lexer::getCurrentToken() const {
@@ -83,7 +84,6 @@ Token Lexer::tryIdentifier() {
     }
   }
   else {
-    //identifier check failed
     return ret;
   }
 
@@ -109,7 +109,7 @@ Token Lexer::tryInteger() {
     ret.value.integer = 0;
   }
   else if(lastChar == '-') {
-    char test = input_.peekNextChar();
+    char test = input.peekNextChar();
 
     if(test != '0' && std::isdigit(test)) {
       saveNextChar();
@@ -142,15 +142,15 @@ Token Lexer::tryOperator() {
   Token ret = Token::Unknown();
 
   if( (ret = tryRelOp()).isValid() )
-      ;
+  {}
   else if( (ret = tryMulOp()).isValid() )
-    ;
+  {}
   else if( (ret = tryAddOp()).isValid() )
-    ;
+  {}
   else if( (ret = tryEqOp()).isValid() )
-    ;
+  {}
   else if( (ret = tryLogicalOp()).isValid() )
-    ;
+  {}
 
   return ret;
 }
@@ -159,7 +159,7 @@ Token Lexer::tryRelOp() {
 Token ret = Token::Unknown();
 
   if(lastChar == '<') {
-    char test = input_.peekNextChar();
+    char test = input.peekNextChar();
 
     if(test == '=') {
       saveNextChar();
@@ -178,7 +178,7 @@ Token ret = Token::Unknown();
     }
   }
   else if(lastChar == '>') {
-    char test = input_.peekNextChar();
+    char test = input.peekNextChar();
 
     if(test == '=') {
       saveNextChar();
@@ -255,15 +255,15 @@ Token Lexer::tryEqOp() {
   Token ret = Token::Unknown();
 
   if(lastChar == '!') {
-    char test = input_.peekNextChar();
+    char test = input.peekNextChar();
 
     if(test == '=') {
       saveNextChar();
       saveNextChar();
 
-      ret.type = Type::EQ_OP;
+      ret.type = Type::EQUAL_OP;
       ret.str = tokenBuffer;
-      ret.value.eqType = EqOpType::NEQ;
+      ret.value.eqType = EqualOpType::NEQ;
     }
     else {
       saveNextChar();
@@ -273,20 +273,20 @@ Token Lexer::tryEqOp() {
     }
   }
   else if(lastChar == '=') {
-    char test = input_.peekNextChar();
+    char test = input.peekNextChar();
 
     if(test == '=') {
       saveNextChar();
       saveNextChar();
 
-      ret.type = Type::EQ_OP;
+      ret.type = Type::EQUAL_OP;
       ret.str = tokenBuffer;
-      ret.value.eqType = EqOpType::EQU;
+      ret.value.eqType = EqualOpType::EQU;
     }
     else {
       saveNextChar();
 
-      ret.type = Type::ASN;
+      ret.type = Type::ASSIGN;
       ret.str = tokenBuffer;
     }
   }
@@ -298,7 +298,7 @@ Token Lexer::tryLogicalOp() {
   Token ret = Token::Unknown();
 
   if(lastChar == '&') {
-    char test = input_.peekNextChar();
+    char test = input.peekNextChar();
 
     if(test == '&') {
       saveNextChar();
@@ -309,7 +309,7 @@ Token Lexer::tryLogicalOp() {
     }
   }
   else if(lastChar == '|') {
-    char test = input_.peekNextChar();
+    char test = input.peekNextChar();
 
     if(test == '|') {
       saveNextChar();
@@ -341,19 +341,13 @@ Token Lexer::tryOther() {
   else if(lastChar == '(') {
     saveNextChar();
 
-    ret.type = Type::RND_OP;
+    ret.type = Type::RND_BRACK_OP;
     ret.str = tokenBuffer;
   }
   else if(lastChar == ')') {
     saveNextChar();
 
-    ret.type = Type::RND_CL;
-    ret.str = tokenBuffer;
-  }
-  else if(lastChar == '.') {
-    saveNextChar();
-
-    ret.type = Type::DOT;
+    ret.type = Type::RND_BRACK_CL;
     ret.str = tokenBuffer;
   }
   else if(lastChar == ',') {
@@ -392,6 +386,38 @@ Token Lexer::tryKeyword() {
   }
 
   if( (ret = tryMove()).isValid()) {
+      return ret;
+  }
+
+  if( (ret = tryCircle()).isValid() ) {
+    return ret;
+  }
+
+  if( (ret = tryQuadrangle()).isValid() ) {
+    return ret;
+  }
+
+  if( (ret = tryLine()).isValid()) {
+      return ret;
+  }
+
+  if( (ret = tryPoint()).isValid()) {
+      return ret;
+  }
+
+  if( (ret = tryBlack()).isValid() ) {
+    return ret;
+  }
+
+  if( (ret = tryRed()).isValid() ) {
+    return ret;
+  }
+
+  if( (ret = tryBlue()).isValid()) {
+      return ret;
+  }
+
+  if( (ret = tryGreen()).isValid()) {
       return ret;
   }
 
@@ -441,7 +467,7 @@ Token Lexer::tryDraw() {
     Token ret = Token::Unknown();
 
     if(tokenBuffer == "draw") {
-        ret.type = Type::DRAW_OP;
+        ret.type = Type::BASIC_FUNC;
         ret.str = tokenBuffer;
         ret.value.basicType = BasicFuncOpType::DRAW;
     }
@@ -452,9 +478,107 @@ Token Lexer::tryMove() {
     Token ret = Token::Unknown();
 
     if(tokenBuffer == "move") {
-        ret.type = Type::MOVE_OP;
+        ret.type = Type::BASIC_FUNC;
         ret.str = tokenBuffer;
         ret.value.basicType = BasicFuncOpType::MOVE;
+    }
+    return ret;
+}
+
+Token Lexer::tryCircle()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "circle") {
+        ret.type = Type::PRIMITIVE_FIGURE;
+        ret.str = tokenBuffer;
+        ret.value.primitiveType = PrimitiveType::CIRCLE;
+    }
+    return ret;
+}
+
+Token Lexer::tryQuadrangle()
+{
+
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "quadrangle") {
+        ret.type = Type::PRIMITIVE_FIGURE;
+        ret.str = tokenBuffer;
+        ret.value.primitiveType = PrimitiveType::QUADRANGLE;
+    }
+    return ret;
+}
+
+Token Lexer::tryLine()
+{
+
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "line") {
+        ret.type = Type::PRIMITIVE_FIGURE;
+        ret.str = tokenBuffer;
+        ret.value.primitiveType = PrimitiveType::LINE;
+    }
+    return ret;
+}
+
+Token Lexer::tryPoint()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "point") {
+        ret.type = Type::PRIMITIVE_FIGURE;
+        ret.str = tokenBuffer;
+        ret.value.primitiveType = PrimitiveType::POINT;
+    }
+    return ret;
+}
+
+Token Lexer::tryBlack()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "black") {
+        ret.type = Type::COLOR_TYPE;
+        ret.str = tokenBuffer;
+        ret.value.colorType = ColorType::BLACK;
+    }
+    return ret;
+}
+
+Token Lexer::tryRed()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "red") {
+        ret.type = Type::COLOR_TYPE;
+        ret.str = tokenBuffer;
+        ret.value.colorType = ColorType::RED;
+    }
+    return ret;
+}
+
+Token Lexer::tryBlue()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "blue") {
+        ret.type = Type::COLOR_TYPE;
+        ret.str = tokenBuffer;
+        ret.value.colorType = ColorType::BLUE;
+    }
+    return ret;
+}
+
+Token Lexer::tryGreen()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "green") {
+        ret.type = Type::COLOR_TYPE;
+        ret.str = tokenBuffer;
+        ret.value.colorType = ColorType::GREEN;
     }
     return ret;
 }

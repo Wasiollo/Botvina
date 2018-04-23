@@ -8,16 +8,26 @@ namespace botvina {
 struct Position {
   Position(int l = 0, int c = 0)
     : line(l),
-      col(c) {
+      column(c) {
   }
 
   int line;
-  int col;
+  int column;
 };
 
 enum BasicFuncOpType {
     MOVE,
     DRAW
+};
+
+enum PrimitiveType {
+    CIRCLE, LINE,
+    QUADRANGLE, POINT
+};
+
+enum ColorType {
+    BLACK, RED,
+    BLUE, GREEN
 };
 
 enum AddOpType {
@@ -37,7 +47,7 @@ enum RelOpType {
   GT, GE
 };
 
-enum EqOpType {
+enum EqualOpType {
   EQU,
   NEQ
 };
@@ -46,18 +56,18 @@ struct Token {
   enum class Type {
     INT, IDN, BLN,
     FUN, RET,
-    MOVE_OP,
-    DRAW_OP,
+    BASIC_FUNC,
+    PRIMITIVE_FIGURE,
+    COLOR_TYPE,
     SET_BRACK_OP, SET_BRACK_CL,
-    RND_OP, RND_CL,
-    SCL, DOT, CMM,
+    RND_BRACK_OP, RND_BRACK_CL,
+    SCL, CMM,
     MUL_OP,
     ADD_OP,
     REL_OP,
-    EQ_OP,
+    EQUAL_OP,
     NOT, AND, OR,
-    ASN,
-    END_OF_SEQ,
+    ASSIGN,
     UNKNOWN
   } type;
 
@@ -69,11 +79,13 @@ struct Token {
     int integer;
     bool boolean;
 
+    ColorType colorType;
+    PrimitiveType primitiveType;
     BasicFuncOpType basicType;
     MulOpType mulType;
     AddOpType addType;
     RelOpType relType;
-    EqOpType eqType;
+    EqualOpType eqType;
   } value;
 
   Token(Type type, const std::string& s = "")
@@ -85,9 +97,9 @@ struct Token {
     pos = p;
   }
 
-  void setPos(int line, int col) {
+  void setPos(int line, int column) {
     pos.line = line;
-    pos.col = col;
+    pos.column = column;
   }
 
   bool isValid() const {

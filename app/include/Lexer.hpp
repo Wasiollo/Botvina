@@ -14,11 +14,11 @@ class Lexer {
 public:
   Lexer(std::istream& in = std::cin);
 
-  Token getToken();
+  Token getNextToken();
   Token getCurrentToken() const;
 
 private:
-  Input input_;
+  Input input;
 
   char lastChar;
   std::string tokenBuffer;
@@ -26,28 +26,32 @@ private:
   Position lexerPosition;
   Token currentToken;
 
-private:
+  //Methods
   void ignoreWhiteSpace();
 
   Token tryIdentifier();
   Token tryInteger();
-
+  Token tryKeyword();
   Token tryOperator();
   Token tryMulOp();
   Token tryAddOp();
   Token tryEqOp();
   Token tryLogicalOp();
   Token tryRelOp();
-
   Token tryOther();
-
-  Token tryKeyword();
   Token tryBoolean();
   Token tryFunc();
   Token tryReturn();
   Token tryDraw();
   Token tryMove();
-
+  Token tryCircle();
+  Token tryQuadrangle();
+  Token tryLine();
+  Token tryPoint();
+  Token tryBlack();
+  Token tryRed();
+  Token tryBlue();
+  Token tryGreen();
 
   void processNextChar();
   void saveNextChar();
