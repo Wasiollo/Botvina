@@ -44,6 +44,10 @@ private:
   Token tryReturn();
   Token tryDraw();
   Token tryMove();
+  Token tryIf();
+  Token tryWhen();
+  Token tryClear();
+  Token tryExit();
   Token tryCircle();
   Token tryQuadrangle();
   Token tryLine();

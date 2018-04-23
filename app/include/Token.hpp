@@ -17,7 +17,11 @@ struct Position {
 
 enum BasicFuncOpType {
     MOVE,
-    DRAW
+    DRAW,
+    IF,
+    WHEN,
+    CLEAR,
+    EXIT
 };
 
 enum PrimitiveType {

@@ -389,6 +389,22 @@ Token Lexer::tryKeyword() {
       return ret;
   }
 
+  if( (ret = tryIf()).isValid()) {
+      return ret;
+  }
+
+  if( (ret = tryWhen()).isValid()) {
+      return ret;
+  }
+
+  if( (ret = tryClear()).isValid()) {
+      return ret;
+  }
+
+  if( (ret = tryExit()).isValid()) {
+      return ret;
+  }
+
   if( (ret = tryCircle()).isValid() ) {
     return ret;
   }
@@ -481,6 +497,54 @@ Token Lexer::tryMove() {
         ret.type = Type::BASIC_FUNC;
         ret.str = tokenBuffer;
         ret.value.basicType = BasicFuncOpType::MOVE;
+    }
+    return ret;
+}
+
+Token Lexer::tryIf()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "if") {
+        ret.type = Type::BASIC_FUNC;
+        ret.str = tokenBuffer;
+        ret.value.basicType = BasicFuncOpType::IF;
+    }
+    return ret;
+}
+
+Token Lexer::tryWhen()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "when") {
+        ret.type = Type::BASIC_FUNC;
+        ret.str = tokenBuffer;
+        ret.value.basicType = BasicFuncOpType::WHEN;
+    }
+    return ret;
+}
+
+Token Lexer::tryClear()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "clear") {
+        ret.type = Type::BASIC_FUNC;
+        ret.str = tokenBuffer;
+        ret.value.basicType = BasicFuncOpType::CLEAR;
+    }
+    return ret;
+}
+
+Token Lexer::tryExit()
+{
+    Token ret = Token::Unknown();
+
+    if(tokenBuffer == "exit") {
+        ret.type = Type::BASIC_FUNC;
+        ret.str = tokenBuffer;
+        ret.value.basicType = BasicFuncOpType::EXIT;
     }
     return ret;
 }

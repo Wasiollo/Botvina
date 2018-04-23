@@ -86,7 +86,7 @@ TEST_CASE( "LEXER TESTS" ) {
   }
 
   SECTION( "FUNCTIONS AND BOOLEAN" ) {
-    iss.str("func draw move return True False");
+    iss.str("func draw move return True False if when clear exit");
 
     SECTION( "func" ) {
       iss.str("func");
@@ -112,6 +112,42 @@ TEST_CASE( "LEXER TESTS" ) {
       REQUIRE( token.type == Token::Type::BASIC_FUNC );
       REQUIRE( token.str == "move" );
       REQUIRE( token.value.basicType == BasicFuncOpType::MOVE );
+    }
+
+    SECTION( "if" ) {
+      iss.str("if");
+
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BASIC_FUNC );
+      REQUIRE( token.str == "if" );
+      REQUIRE( token.value.basicType == BasicFuncOpType::IF );
+    }
+
+    SECTION( "when" ) {
+      iss.str("when");
+
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BASIC_FUNC );
+      REQUIRE( token.str == "when" );
+      REQUIRE( token.value.basicType == BasicFuncOpType::WHEN );
+    }
+
+    SECTION( "clear" ) {
+      iss.str("clear");
+
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BASIC_FUNC );
+      REQUIRE( token.str == "clear" );
+      REQUIRE( token.value.basicType == BasicFuncOpType::CLEAR );
+    }
+
+    SECTION( "exit" ) {
+      iss.str("exit");
+
+      token = lexer.getNextToken();
+      REQUIRE( token.type == Token::Type::BASIC_FUNC );
+      REQUIRE( token.str == "exit" );
+      REQUIRE( token.value.basicType == BasicFuncOpType::EXIT );
     }
 
     SECTION( "return" ) {
