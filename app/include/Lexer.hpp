@@ -12,7 +12,7 @@ namespace botvina {
 
 class Lexer {
 public:
-  Lexer(std::istream& in = std::cin);
+  explicit Lexer(std::istream& in = std::cin);
 
   Token getNextToken();
   Token getCurrentToken() const;
