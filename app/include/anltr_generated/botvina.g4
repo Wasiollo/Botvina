@@ -21,7 +21,7 @@ if_statement
 
 
 loop_statement
-	: LOOP_KEYWORD condition block
+	: WHEN_KEYWORD condition block
 	;
 
 
@@ -115,7 +115,7 @@ color
 	;
 
 expr
-	: atom ((MUL_OPERATOR | ADD_OPERATOR | RELATION_OPERATOR | EQ_OPERATOR | OR_OPERATOR | AND OPERATOR) atom)*
+	: atom ((MUL_OPERATOR | ADD_OPERATOR | RELATION_OPERATOR | EQ_OPERATOR | OR_OPERATOR | AND_OPERATOR) atom)*
 	;
 
 parameter_list
@@ -179,11 +179,11 @@ RETURN_KEYWORD
 	;
 
 TRUE_KEYWORD
-	: 'true'
+	: 'True'
 	;
 
 FALSE_KEYWORD
-	: 'false'
+	: 'False'
 	;
 
 CIRCLE_KEYWORD
@@ -224,6 +224,10 @@ BLUE_KEYWORD
 
 GREEN_KEYWORD
 	: 'green'
+	;
+
+WHEN_KEYWORD
+	: 'when'
 	;
 
 MUL_OPERATOR

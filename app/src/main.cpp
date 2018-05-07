@@ -9,13 +9,15 @@
 using namespace antlr4;
 
 int main(int argc, char *argv[]) {
-  ANTLRInputStream input("x = 5;\ny = 3;\nfunc t_letter(x,y)\n{\ndraw line l1 (60, 20) (60, 80) (40, 80) (40, 90)\n(90, 90) (90, 80) (70, 80) (70, 20) (60, 20) black ;\n}");
+  ANTLRInputStream input("x = 5;\ny = 3;\nfunc t_letter(x,y)\n{\ndraw line l1 (60, 20) (60, 80) (40, 80) (40, 90)\n(90, 90) (90, 80) (70, 80) (70, 20) (60, 20) black ;\n}\nt_letter(x,y);\n clear; exit; draw line l1 (60, 20) (60, 80) (40, 80) red ;"
+                         "move t_letter (30,20) ;"
+                         "return 0;");
   botvinaLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
 
-  tokens.fill();
+   tokens.fill();
   for (auto token : tokens.getTokens()) {
-    std::cout << token->toString() << std::endl;
+    std::cout <<token->toString() << std::endl;
   }
 
   botvinaParser parser(&tokens);

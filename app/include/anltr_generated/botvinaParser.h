@@ -17,10 +17,9 @@ public:
     CLEAR_KEYWORD = 11, EXIT_KEYWORD = 12, RETURN_KEYWORD = 13, TRUE_KEYWORD = 14, 
     FALSE_KEYWORD = 15, CIRCLE_KEYWORD = 16, QUADRANGLE_KEYWORD = 17, POINT_KEYWORD = 18, 
     LINE_KEYWORD = 19, DRAW_KEYWORD = 20, MOVE_KEYWORD = 21, BLACK_KEYWORD = 22, 
-    RED_KEYWORD = 23, BLUE_KEYWORD = 24, GREEN_KEYWORD = 25, MUL_OPERATOR = 26, 
-    ADD_OPERATOR = 27, RELATION_OPERATOR = 28, EQ_OPERATOR = 29, AND_OPERATOR = 30, 
-    OR_OPERATOR = 31, IDENTIFIER = 32, WS = 33, LOOP_KEYWORD = 34, AND = 35, 
-    OPERATOR = 36
+    RED_KEYWORD = 23, BLUE_KEYWORD = 24, GREEN_KEYWORD = 25, WHEN_KEYWORD = 26, 
+    MUL_OPERATOR = 27, ADD_OPERATOR = 28, RELATION_OPERATOR = 29, EQ_OPERATOR = 30, 
+    AND_OPERATOR = 31, OR_OPERATOR = 32, IDENTIFIER = 33, WS = 34
   };
 
   enum {
@@ -146,7 +145,7 @@ public:
   public:
     Loop_statementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *LOOP_KEYWORD();
+    antlr4::tree::TerminalNode *WHEN_KEYWORD();
     ConditionContext *condition();
     BlockContext *block();
 
@@ -518,10 +517,8 @@ public:
     antlr4::tree::TerminalNode* EQ_OPERATOR(size_t i);
     std::vector<antlr4::tree::TerminalNode *> OR_OPERATOR();
     antlr4::tree::TerminalNode* OR_OPERATOR(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> AND();
-    antlr4::tree::TerminalNode* AND(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> OPERATOR();
-    antlr4::tree::TerminalNode* OPERATOR(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> AND_OPERATOR();
+    antlr4::tree::TerminalNode* AND_OPERATOR(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

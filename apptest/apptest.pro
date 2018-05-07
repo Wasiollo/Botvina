@@ -12,16 +12,25 @@ include(../3rdparty/trompeloeil/trompeloeil.pri)
 
 PROJECT_DIR = $$PWD/../app
 
-INCLUDEPATH += $$PROJECT_DIR
+INCLUDEPATH += $$PROJECT_DIR \
+       $$PROJECT_DIR/include/antlr4-runtime
 
 PROJECT_SOURCES = \
     $$PROJECT_DIR/src/Input.cpp \
-    $$PROJECT_DIR/src/Lexer.cpp
+    $$PROJECT_DIR/src/Lexer.cpp \
+    $$PROJECT_DIR/include/anltr_generated/botvinaBaseListener.cpp \
+    $$PROJECT_DIR/include/anltr_generated/botvinaLexer.cpp \
+    $$PROJECT_DIR/include/anltr_generated/botvinaListener.cpp \
+    $$PROJECT_DIR/include/anltr_generated/botvinaParser.cpp \
 
 PROJECT_HEADERS = \
     $$PROJECT_DIR/include/Input.hpp \
     $$PROJECT_DIR/include/Lexer.hpp \
-    $$PROJECT_DIR/include/Token.hpp
+    $$PROJECT_DIR/include/Token.hpp \
+    $$PROJECT_DIR/include/anltr_generated/botvinaBaseListener.h \
+    $$PROJECT_DIR/include/anltr_generated/botvinaLexer.h \
+    $$PROJECT_DIR/include/anltr_generated/botvinaListener.h \
+    $$PROJECT_DIR/include/anltr_generated/botvinaParser.h
 
 
 
@@ -30,7 +39,20 @@ SOURCES +=  \
     main.cpp\
     $$PROJECT_SOURCES \
     InputTests.cpp \
-    LexerTests.cpp
+    LexerTests.cpp \
+    AntlerLexerTests.cpp \
+    ParserTests.cpp
 
 HEADERS += \
     $$PROJECT_HEADERS
+
+DISTFILES += \
+    $$PROJECT_DIR/include/anltr_generated/botvina.interp \
+    $$PROJECT_DIR/include/anltr_generated/botvina.tokens \
+    $$PROJECT_DIR/include/anltr_generated/botvinaLexer.interp \
+    $$PROJECT_DIR/include/anltr_generated/botvinaLexer.tokens \
+    $$PROJECT_DIR/include/anltr_generated/botvina.g4 \
+    $$PROJECT_DIR/lib/libantlr4-runtime.so.4.7.1 \
+    $$PROJECT_DIR/lib/libantlr4-runtime.so
+
+LIBS += -L"$$PROJECT_DIR/lib/" -lantlr4-runtime
