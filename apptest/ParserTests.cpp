@@ -55,7 +55,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
     tree = parser.position();
 
-    REQUIRE( tree->toStringTree(&parser) == "(position ( (integer 60) , (integer 20) ))");
+    REQUIRE( tree->toStringTree(&parser) == "(position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 20))) ))");
 
   }
 
@@ -101,7 +101,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
       tree = parser.assign_statement();
 
-      REQUIRE( tree->toStringTree(&parser) == "(assign_statement (identifier x) = (integer 5) ;)");
+      REQUIRE( tree->toStringTree(&parser) == "(assign_statement (identifier x) = (math_expr (atom (integer 5))) ;)");
   }
 
   SECTION( "FUNCTION LITERAL"){
@@ -116,7 +116,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
       tree = parser.function_literal();
 
-      REQUIRE( tree->toStringTree(&parser) == "(function_literal func (identifier t_letter) ( (parameter_list (expr (atom (identifier x))) , (expr (atom (identifier y)))) ) (block { (statement (operand (draw draw (predefined_figure (line line (identifier l1) (position ( (integer 60) , (integer 20) )) (position ( (integer 60) , (integer 80) )) (position ( (integer 40) , (integer 80) )) (position ( (integer 40) , (integer 90) )) (position ( (integer 90) , (integer 90) )) (position ( (integer 90) , (integer 80) )) (position ( (integer 70) , (integer 80) )) (position ( (integer 70) , (integer 20) )) (position ( (integer 60) , (integer 20) )) (color black))) ;))) }))");
+      REQUIRE( tree->toStringTree(&parser) == "(function_literal func (identifier t_letter) ( (parameter_list (expr (math_expr (atom (identifier x)))) , (expr (math_expr (atom (identifier y))))) ) (block { (statement (operand (draw draw (predefined_figure (line line (identifier l1) (position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 20))) )) (position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 80))) )) (position ( (math_expr (atom (integer 40))) , (math_expr (atom (integer 80))) )) (position ( (math_expr (atom (integer 40))) , (math_expr (atom (integer 90))) )) (position ( (math_expr (atom (integer 90))) , (math_expr (atom (integer 90))) )) (position ( (math_expr (atom (integer 90))) , (math_expr (atom (integer 80))) )) (position ( (math_expr (atom (integer 70))) , (math_expr (atom (integer 80))) )) (position ( (math_expr (atom (integer 70))) , (math_expr (atom (integer 20))) )) (position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 20))) )) (color black))) ;))) }))");
   }
 
   SECTION( "FUNCTION APPLY"){
@@ -131,7 +131,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
       tree = parser.function_apply();
 
-      REQUIRE( tree->toStringTree(&parser) == "(function_apply (identifier t_letter) ( (parameter_list (expr (atom (identifier x))) , (expr (atom (identifier y)))) ) ;)");
+      REQUIRE( tree->toStringTree(&parser) == "(function_apply (identifier t_letter) ( (parameter_list (expr (math_expr (atom (identifier x)))) , (expr (math_expr (atom (identifier y))))) ) ;)");
   }
 
   SECTION( "CLEAR STATEMENT"){
@@ -177,7 +177,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
       tree = parser.draw();
 
-      REQUIRE( tree->toStringTree(&parser) == "(draw draw (predefined_figure (line line (identifier l1) (position ( (integer 60) , (integer 20) )) (position ( (integer 60) , (integer 80) )) (position ( (integer 40) , (integer 80) )) (color red))) ;)");
+      REQUIRE( tree->toStringTree(&parser) == "(draw draw (predefined_figure (line line (identifier l1) (position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 20))) )) (position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 80))) )) (position ( (math_expr (atom (integer 40))) , (math_expr (atom (integer 80))) )) (color red))) ;)");
   }
 
   SECTION( "MOVE KEYWORD"){
@@ -192,7 +192,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
       tree = parser.move();
 
-      REQUIRE( tree->toStringTree(&parser) == "(move move (identifier t_letter) (position ( (integer 30) , (integer 20) )) ;)");
+      REQUIRE( tree->toStringTree(&parser) == "(move move (identifier t_letter) (position ( (math_expr (atom (integer 30))) , (math_expr (atom (integer 20))) )) ;)");
   }
 
   SECTION( "RETURN KEYWORD"){
@@ -207,7 +207,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
       tree = parser.return_statement();
 
-      REQUIRE( tree->toStringTree(&parser) == "(return_statement return (expr (atom (integer 0))) ;)");
+      REQUIRE( tree->toStringTree(&parser) == "(return_statement return (expr (math_expr (atom (integer 0)))) ;)");
   }
 
   SECTION( "INPUT TEXT" ){
@@ -222,7 +222,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
 
       tree = parser.input_text();
 
-      REQUIRE( tree->toStringTree(&parser) == "(input_text (statement (assign_statement (identifier x) = (integer 5) ;)) <EOF>)");
+      REQUIRE( tree->toStringTree(&parser) == "(input_text (statement (assign_statement (identifier x) = (math_expr (atom (integer 5))) ;)) <EOF>)");
   }
 
 }

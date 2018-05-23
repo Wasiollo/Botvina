@@ -11,7 +11,7 @@ statement
 
 
 assign_statement
-	: identifier EQ (integer | identifier) SEMICOLON
+	: identifier EQ math_expr SEMICOLON
 	;
 
 
@@ -67,11 +67,11 @@ identifier
 	;
 
 condition
-	: RND_BRACKET_OP expr RELATION_OPERATOR expr RND_BRACKET_CL
+	: RND_BRACKET_OP expr logic_expr expr RND_BRACKET_CL
 	;
 
 position
-	: RND_BRACKET_OP (identifier | integer) CMM (identifier | integer) RND_BRACKET_CL
+	: RND_BRACKET_OP math_expr CMM math_expr RND_BRACKET_CL
 	;
 
 atom
@@ -115,7 +115,15 @@ color
 	;
 
 expr
-	: atom ((MUL_OPERATOR | ADD_OPERATOR | RELATION_OPERATOR | EQ_OPERATOR | OR_OPERATOR | AND_OPERATOR) atom)*
+	: (math_expr | logic_expr)
+	;
+
+math_expr
+	: atom ((MUL_OPERATOR | ADD_OPERATOR) atom)*
+	;
+
+logic_expr
+	: atom ((RELATION_OPERATOR | EQ_OPERATOR | OR_OPERATOR | AND_OPERATOR) atom)*
 	;
 
 parameter_list

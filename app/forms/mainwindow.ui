@@ -14,14 +14,52 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="commandLine">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>500</y>
-      <width>701</width>
+      <x>30</x>
+      <y>520</y>
+      <width>931</width>
       <height>31</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="commandsHistory">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>440</y>
+      <width>931</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>0</y>
+      <width>931</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
    </widget>
   </widget>
@@ -31,7 +69,7 @@
      <x>0</x>
      <y>0</y>
      <width>988</width>
-     <height>25</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>

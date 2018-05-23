@@ -98,6 +98,12 @@ public:
   virtual void enterExpr(botvinaParser::ExprContext *ctx) = 0;
   virtual void exitExpr(botvinaParser::ExprContext *ctx) = 0;
 
+  virtual void enterMath_expr(botvinaParser::Math_exprContext *ctx) = 0;
+  virtual void exitMath_expr(botvinaParser::Math_exprContext *ctx) = 0;
+
+  virtual void enterLogic_expr(botvinaParser::Logic_exprContext *ctx) = 0;
+  virtual void exitLogic_expr(botvinaParser::Logic_exprContext *ctx) = 0;
+
   virtual void enterParameter_list(botvinaParser::Parameter_listContext *ctx) = 0;
   virtual void exitParameter_list(botvinaParser::Parameter_listContext *ctx) = 0;
 

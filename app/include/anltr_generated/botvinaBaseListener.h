@@ -100,6 +100,12 @@ public:
   virtual void enterExpr(botvinaParser::ExprContext * /*ctx*/) override { }
   virtual void exitExpr(botvinaParser::ExprContext * /*ctx*/) override { }
 
+  virtual void enterMath_expr(botvinaParser::Math_exprContext * /*ctx*/) override { }
+  virtual void exitMath_expr(botvinaParser::Math_exprContext * /*ctx*/) override { }
+
+  virtual void enterLogic_expr(botvinaParser::Logic_exprContext * /*ctx*/) override { }
+  virtual void exitLogic_expr(botvinaParser::Logic_exprContext * /*ctx*/) override { }
+
   virtual void enterParameter_list(botvinaParser::Parameter_listContext * /*ctx*/) override { }
   virtual void exitParameter_list(botvinaParser::Parameter_listContext * /*ctx*/) override { }
 

@@ -4,6 +4,7 @@
 #include "../include/anltr_generated/botvinaLexer.h"
 #include "../include/anltr_generated/botvinaParser.h"
 #include "include/mainwindow.h"
+
 #include <QtWidgets/QApplication>
 
 using namespace antlr4;
@@ -24,10 +25,12 @@ int main(int argc, char *argv[]) {
   tree::ParseTree* tree = parser.input_text();
 
   std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
-
+ 
+  
   QApplication a(argc, argv);
       MainWindow w;
       w.show();
+
 
       return a.exec();
 }

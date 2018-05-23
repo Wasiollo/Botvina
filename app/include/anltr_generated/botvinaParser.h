@@ -30,7 +30,7 @@ public:
     RuleCondition = 15, RulePosition = 16, RuleAtom = 17, RulePredefined_figure = 18, 
     RuleCircle = 19, RuleQuadrangle = 20, RulePoint = 21, RuleLine = 22, 
     RuleDraw = 23, RuleMove = 24, RuleSize = 25, RuleColor = 26, RuleExpr = 27, 
-    RuleParameter_list = 28
+    RuleMath_expr = 28, RuleLogic_expr = 29, RuleParameter_list = 30
   };
 
   botvinaParser(antlr4::TokenStream *input);
@@ -71,6 +71,8 @@ public:
   class SizeContext;
   class ColorContext;
   class ExprContext;
+  class Math_exprContext;
+  class Logic_exprContext;
   class Parameter_listContext; 
 
   class  Input_textContext : public antlr4::ParserRuleContext {
@@ -113,11 +115,10 @@ public:
   public:
     Assign_statementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<IdentifierContext *> identifier();
-    IdentifierContext* identifier(size_t i);
+    IdentifierContext *identifier();
     antlr4::tree::TerminalNode *EQ();
+    Math_exprContext *math_expr();
     antlr4::tree::TerminalNode *SEMICOLON();
-    IntegerContext *integer();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -312,7 +313,7 @@ public:
     antlr4::tree::TerminalNode *RND_BRACKET_OP();
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *RELATION_OPERATOR();
+    Logic_exprContext *logic_expr();
     antlr4::tree::TerminalNode *RND_BRACKET_CL();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -327,12 +328,10 @@ public:
     PositionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *RND_BRACKET_OP();
+    std::vector<Math_exprContext *> math_expr();
+    Math_exprContext* math_expr(size_t i);
     antlr4::tree::TerminalNode *CMM();
     antlr4::tree::TerminalNode *RND_BRACKET_CL();
-    std::vector<IdentifierContext *> identifier();
-    IdentifierContext* identifier(size_t i);
-    std::vector<IntegerContext *> integer();
-    IntegerContext* integer(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -505,12 +504,40 @@ public:
   public:
     ExprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    Math_exprContext *math_expr();
+    Logic_exprContext *logic_expr();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  ExprContext* expr();
+
+  class  Math_exprContext : public antlr4::ParserRuleContext {
+  public:
+    Math_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     std::vector<AtomContext *> atom();
     AtomContext* atom(size_t i);
     std::vector<antlr4::tree::TerminalNode *> MUL_OPERATOR();
     antlr4::tree::TerminalNode* MUL_OPERATOR(size_t i);
     std::vector<antlr4::tree::TerminalNode *> ADD_OPERATOR();
     antlr4::tree::TerminalNode* ADD_OPERATOR(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Math_exprContext* math_expr();
+
+  class  Logic_exprContext : public antlr4::ParserRuleContext {
+  public:
+    Logic_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<AtomContext *> atom();
+    AtomContext* atom(size_t i);
     std::vector<antlr4::tree::TerminalNode *> RELATION_OPERATOR();
     antlr4::tree::TerminalNode* RELATION_OPERATOR(size_t i);
     std::vector<antlr4::tree::TerminalNode *> EQ_OPERATOR();
@@ -525,7 +552,7 @@ public:
    
   };
 
-  ExprContext* expr();
+  Logic_exprContext* logic_expr();
 
   class  Parameter_listContext : public antlr4::ParserRuleContext {
   public:
