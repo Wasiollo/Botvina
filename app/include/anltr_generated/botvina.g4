@@ -1,290 +1,303 @@
 // Grammar for TKOM lessons - Botvina
 grammar botvina;
-
+ 
 input_text
-	: (statement)* EOF
-	;
-
+    : (statement)* EOF
+    ;
+ 
 statement
-	: (assign_statement | loop_statement | if_statement | function_literal | function_apply | operand | clear_statement | exit_statement | return_statement)
-	;
-
-
+    : (assign_statement | loop_statement | if_statement | function_literal | function_apply | draw | clear_statement | exit_statement)
+    ;
+ 
+ 
 assign_statement
-	: identifier EQ math_expr SEMICOLON
-	;
-
-
+    : identifier EQ math_expr SEMICOLON
+    ;
+ 
+ 
 if_statement
-	: IF_KEYWORD condition block
-	;
-
-
+    : IF_KEYWORD condition block
+    ;
+ 
+ 
 loop_statement
-	: WHEN_KEYWORD condition block
-	;
-
-
-operand
-	: draw | move
-	;
-
-
+    : WHEN_KEYWORD condition block
+    ; 
+ 
 function_literal
-	: FUNCTION_KEYWORD identifier RND_BRACKET_OP parameter_list RND_BRACKET_CL block
-	;
-
+    : FUNCTION_KEYWORD identifier RND_BRACKET_OP parameter_list RND_BRACKET_CL block
+    ;
+ 
 function_apply
-	: identifier RND_BRACKET_OP parameter_list RND_BRACKET_CL SEMICOLON
-	;
-
+    : identifier RND_BRACKET_OP parameter_list RND_BRACKET_CL SEMICOLON
+    ;
+ 
 clear_statement
-	: CLEAR_KEYWORD SEMICOLON
-	;
-
+    : CLEAR_KEYWORD SEMICOLON
+    ;
+ 
 exit_statement
-	: EXIT_KEYWORD SEMICOLON
-	;
-
+    : EXIT_KEYWORD SEMICOLON
+    ;
+ 
 return_statement
-	: RETURN_KEYWORD expr SEMICOLON
-	;
-
+    : RETURN_KEYWORD expr SEMICOLON
+    ;
+ 
 block
-	: SET_BRACKET_OP (statement)* (return_statement)? SET_BRACKET_CL
-	;
-
+    : SET_BRACKET_OP (statement)* (return_statement)? SET_BRACKET_CL
+    ;
+ 
 boolean
-	: FALSE_KEYWORD | TRUE_KEYWORD
-	;
-
+    : FALSE_KEYWORD | TRUE_KEYWORD
+    ;
+ 
 integer
-	: INTEGER
-	;
-
+    : INTEGER
+    ;
+ 
 identifier
-	: IDENTIFIER
-	;
-
+    : IDENTIFIER
+    ;
+ 
 condition
-	: RND_BRACKET_OP expr logic_expr expr RND_BRACKET_CL
-	;
-
+    : RND_BRACKET_OP logic_expr RND_BRACKET_CL
+    ;
+ 
 position
-	: RND_BRACKET_OP math_expr CMM math_expr RND_BRACKET_CL
-	;
-
+    : RND_BRACKET_OP math_expr CMM math_expr RND_BRACKET_CL
+    ;
+ 
 atom
-	: integer | boolean | function_apply | function_literal | identifier
-	;
-
+    : integer | boolean | function_apply | function_literal | identifier
+    ;
+ 
 predefined_figure
-	: quadrangle | point | circle | line
-	;
-
+    : quadrangle | point | circle | line
+    ;
+ 
 circle
-	: CIRCLE_KEYWORD identifier position size color
-	;
-
+    : CIRCLE_KEYWORD position size color
+    ;
+ 
 quadrangle
-	: QUADRANGLE_KEYWORD identifier position size color
-	;
-
+    : QUADRANGLE_KEYWORD position size color
+    ;
+ 
 point
-	: POINT_KEYWORD identifier position color
-	;
-
+    : POINT_KEYWORD position color
+    ;
+ 
 line
-	: LINE_KEYWORD identifier (position)+ color
-	;
-
+    : LINE_KEYWORD position position color
+    ;
+ 
 draw
-	: DRAW_KEYWORD predefined_figure SEMICOLON
-	;
-
-move
-	: MOVE_KEYWORD identifier position SEMICOLON
-	;
+    : DRAW_KEYWORD predefined_figure SEMICOLON
+    ;
 
 size
-	: integer
-	;
-
+    : integer
+    ;
+ 
 color
-	: BLACK_KEYWORD | RED_KEYWORD | BLUE_KEYWORD | GREEN_KEYWORD
-	;
+    : BLACK_KEYWORD | RED_KEYWORD | BLUE_KEYWORD | GREEN_KEYWORD
+    ;
 
 expr
-	: (math_expr | logic_expr)
-	;
+    : (math_expr | logic_expr)
+    ;
 
 math_expr
-	: atom ((MUL_OPERATOR | ADD_OPERATOR) atom)*
-	;
+    : (add_expr | mul_expr)
+    ;
 
 logic_expr
-	: atom ((RELATION_OPERATOR | EQ_OPERATOR | OR_OPERATOR | AND_OPERATOR) atom)*
-	;
+    : (or_expr | and_expr | eq_expr | rel_expr)
+    ;
+
+add_expr
+    : atom (ADD_OPERATOR atom)*
+    ;
+
+mul_expr
+    : atom (MUL_OPERATOR atom)*
+    ;
+
+or_expr
+    : atom ( OR_OPERATOR atom)*
+    ;
+
+and_expr
+    : atom (AND_OPERATOR atom)*
+    ;
+
+eq_expr
+    : atom (EQ_OPERATOR atom)?
+    ;
+
+rel_expr
+    : atom (RELATION_OPERATOR atom)?
+    ;
 
 parameter_list
-	: (expr (CMM expr)*)?
-	;
-
+    : (expr (CMM expr)*)?
+    ;
+ 
 INTEGER
-	: '0' | (('-')? NATURAL_NUMBER)
-	;
-
+    : '0' | (('-')? NATURAL_NUMBER)
+    ;
+ 
 CMM
-	: ','
-	;
-
+    : ','
+    ;
+ 
 RND_BRACKET_OP
-	: '('
-	;
-
-
+    : '('
+    ;
+ 
+ 
 RND_BRACKET_CL
-	: ')'
-	;
-
-
+    : ')'
+    ;
+ 
+ 
 SET_BRACKET_OP
-	: '{'
-	;
-
-
+    : '{'
+    ;
+ 
+ 
 SET_BRACKET_CL
-	: '}'
-	;
-
-
+    : '}'
+    ;
+ 
+ 
 SEMICOLON
-	: ';'
-	;
-
+    : ';'
+    ;
+ 
 EQ
-	: '='
-	;
-
+    : '='
+    ;
+ 
 IF_KEYWORD
-	: 'if'
-	;
-
+    : 'if'
+    ;
+ 
 FUNCTION_KEYWORD
-	: 'func'
-	;
-
+    : 'func'
+    ;
+ 
 CLEAR_KEYWORD
-	: 'clear'
-	;
-
+    : 'clear'
+    ;
+ 
 EXIT_KEYWORD
-	: 'exit'
-	;
-
+    : 'exit'
+    ;
+ 
 RETURN_KEYWORD
-	: 'return'
-	;
-
+    : 'return'
+    ;
+ 
 TRUE_KEYWORD
-	: 'True'
-	;
-
+    : 'True'
+    ;
+ 
 FALSE_KEYWORD
-	: 'False'
-	;
-
+    : 'False'
+    ;
+ 
 CIRCLE_KEYWORD
-	: 'circle'
-	;
-
+    : 'circle'
+    ;
+ 
 QUADRANGLE_KEYWORD
-	: 'quadrangle'
-	;
-
+    : 'quadrangle'
+    ;
+ 
 POINT_KEYWORD
-	: 'point'
-	;
-
+    : 'point'
+    ;
+ 
 LINE_KEYWORD
-	: 'line'
-	;
-
+    : 'line'
+    ;
+ 
 DRAW_KEYWORD
-	: 'draw'
-	;
-
+    : 'draw'
+    ;
+ 
 MOVE_KEYWORD
-	: 'move'
-	;
-
+    : 'move'
+    ;
+ 
 BLACK_KEYWORD
-	: 'black'
-	;
-
+    : 'black'
+    ;
+ 
 RED_KEYWORD
-	: 'red'
-	;
-
+    : 'red'
+    ;
+ 
 BLUE_KEYWORD
-	: 'blue'
-	;
-
+    : 'blue'
+    ;
+ 
 GREEN_KEYWORD
-	: 'green'
-	;
-
+    : 'green'
+    ;
+ 
 WHEN_KEYWORD
-	: 'when'
-	;
-
+    : 'when'
+    ;
+ 
 MUL_OPERATOR
-	: '*' | '/' | '%'
-	;
-
+    : '*' | '/' | '%'
+    ;
+ 
 ADD_OPERATOR
-	: '+' | '-'
-	;
-
+    : '+' | '-'
+    ;
+ 
 RELATION_OPERATOR
-	: '<' | '<=' | '>' | '>='
-	;
-
+    : '<' | '<=' | '>' | '>='
+    ;
+ 
 EQ_OPERATOR
-	: '==' | '!='
-	;
-
+    : '==' | '!='
+    ;
+ 
 AND_OPERATOR
-	: '&&'
-	;
-
+    : '&&'
+    ;
+ 
 OR_OPERATOR
-	: '||'
-	;
-
+    : '||'
+    ;
+ 
 IDENTIFIER
-	: (ALPHA | '_') (ALPHA_NUM | '_')*
-	;
-
+    : (ALPHA | '_') (ALPHA_NUM | '_')*
+    ;
+ 
 WS: [ \t\r\n]+ -> skip ;
-
+ 
 fragment ALPHA_NUM
-	: ALPHA | DIGIT
-	;
-
+    : ALPHA | DIGIT
+    ;
+ 
 fragment ALPHA
-	: [A-Za-z]
-	;
-
+    : [A-Za-z]
+    ;
+ 
 fragment NATURAL_NUMBER
-	: NON_ZERO_DIGIT (DIGIT)*
-	;
-
+    : NON_ZERO_DIGIT (DIGIT)*
+    ;
+ 
 fragment DIGIT
-	: [0-9]
-	;
-
+    : [0-9]
+    ;
+ 
 fragment NON_ZERO_DIGIT
-	: [1-9]
-	;
-
+    : [1-9]
+    ;

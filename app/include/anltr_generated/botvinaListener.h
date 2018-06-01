@@ -29,9 +29,6 @@ public:
   virtual void enterLoop_statement(botvinaParser::Loop_statementContext *ctx) = 0;
   virtual void exitLoop_statement(botvinaParser::Loop_statementContext *ctx) = 0;
 
-  virtual void enterOperand(botvinaParser::OperandContext *ctx) = 0;
-  virtual void exitOperand(botvinaParser::OperandContext *ctx) = 0;
-
   virtual void enterFunction_literal(botvinaParser::Function_literalContext *ctx) = 0;
   virtual void exitFunction_literal(botvinaParser::Function_literalContext *ctx) = 0;
 
@@ -86,9 +83,6 @@ public:
   virtual void enterDraw(botvinaParser::DrawContext *ctx) = 0;
   virtual void exitDraw(botvinaParser::DrawContext *ctx) = 0;
 
-  virtual void enterMove(botvinaParser::MoveContext *ctx) = 0;
-  virtual void exitMove(botvinaParser::MoveContext *ctx) = 0;
-
   virtual void enterSize(botvinaParser::SizeContext *ctx) = 0;
   virtual void exitSize(botvinaParser::SizeContext *ctx) = 0;
 
@@ -103,6 +97,24 @@ public:
 
   virtual void enterLogic_expr(botvinaParser::Logic_exprContext *ctx) = 0;
   virtual void exitLogic_expr(botvinaParser::Logic_exprContext *ctx) = 0;
+
+  virtual void enterAdd_expr(botvinaParser::Add_exprContext *ctx) = 0;
+  virtual void exitAdd_expr(botvinaParser::Add_exprContext *ctx) = 0;
+
+  virtual void enterMul_expr(botvinaParser::Mul_exprContext *ctx) = 0;
+  virtual void exitMul_expr(botvinaParser::Mul_exprContext *ctx) = 0;
+
+  virtual void enterOr_expr(botvinaParser::Or_exprContext *ctx) = 0;
+  virtual void exitOr_expr(botvinaParser::Or_exprContext *ctx) = 0;
+
+  virtual void enterAnd_expr(botvinaParser::And_exprContext *ctx) = 0;
+  virtual void exitAnd_expr(botvinaParser::And_exprContext *ctx) = 0;
+
+  virtual void enterEq_expr(botvinaParser::Eq_exprContext *ctx) = 0;
+  virtual void exitEq_expr(botvinaParser::Eq_exprContext *ctx) = 0;
+
+  virtual void enterRel_expr(botvinaParser::Rel_exprContext *ctx) = 0;
+  virtual void exitRel_expr(botvinaParser::Rel_exprContext *ctx) = 0;
 
   virtual void enterParameter_list(botvinaParser::Parameter_listContext *ctx) = 0;
   virtual void exitParameter_list(botvinaParser::Parameter_listContext *ctx) = 0;

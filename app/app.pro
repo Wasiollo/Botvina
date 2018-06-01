@@ -24,7 +24,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 INCLUDEPATH += \
-        include/antlr4-runtime
+        include/antlr4-runtime \
+        include
 
 SOURCES += \
     include/anltr_generated/botvinaBaseListener.cpp \
@@ -34,7 +35,8 @@ SOURCES += \
     src/Input.cpp \
     src/Lexer.cpp \
     src/main.cpp \
-    src/mainwindow.cpp
+    src/mainwindow.cpp \
+    src/botvinareallistener.cpp
 
 HEADERS += \
         include/mainwindow.h \
@@ -44,7 +46,28 @@ HEADERS += \
     include/anltr_generated/botvinaBaseListener.h \
     include/anltr_generated/botvinaLexer.h \
     include/anltr_generated/botvinaListener.h \
-    include/anltr_generated/botvinaParser.h
+    include/anltr_generated/botvinaParser.h \
+    include/ast/atom/Integer.hpp \
+    include/ast/Node.hpp \
+    include/ast/atom/FunctionApply.hpp \
+    include/ast/atom/FunctionLiteral.hpp \
+    include/ast/atom/Identifier.hpp \
+    include/botvinareallistener.hpp \
+    include/ast/and_statement.h \
+    include/ast/assign_statement.h \
+    include/ast/circle.hpp \
+    include/ast/eq_statement.hpp \
+    include/ast/if_statement.hpp \
+    include/ast/line.hpp \
+    include/ast/loop_statement.hpp \
+    include/ast/or_statement.hpp \
+    include/ast/point.hpp \
+    include/ast/quadrangle.hpp \
+    include/ast/color.hpp \
+    include/ast/rel_statement.hpp \
+    include/ast/ast.hpp \
+    include/ast/add_statement.h \
+    include/ast/mul_statement.h
 
 FORMS += \
         forms/mainwindow.ui

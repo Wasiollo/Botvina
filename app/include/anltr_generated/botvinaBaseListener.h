@@ -31,9 +31,6 @@ public:
   virtual void enterLoop_statement(botvinaParser::Loop_statementContext * /*ctx*/) override { }
   virtual void exitLoop_statement(botvinaParser::Loop_statementContext * /*ctx*/) override { }
 
-  virtual void enterOperand(botvinaParser::OperandContext * /*ctx*/) override { }
-  virtual void exitOperand(botvinaParser::OperandContext * /*ctx*/) override { }
-
   virtual void enterFunction_literal(botvinaParser::Function_literalContext * /*ctx*/) override { }
   virtual void exitFunction_literal(botvinaParser::Function_literalContext * /*ctx*/) override { }
 
@@ -88,9 +85,6 @@ public:
   virtual void enterDraw(botvinaParser::DrawContext * /*ctx*/) override { }
   virtual void exitDraw(botvinaParser::DrawContext * /*ctx*/) override { }
 
-  virtual void enterMove(botvinaParser::MoveContext * /*ctx*/) override { }
-  virtual void exitMove(botvinaParser::MoveContext * /*ctx*/) override { }
-
   virtual void enterSize(botvinaParser::SizeContext * /*ctx*/) override { }
   virtual void exitSize(botvinaParser::SizeContext * /*ctx*/) override { }
 
@@ -105,6 +99,24 @@ public:
 
   virtual void enterLogic_expr(botvinaParser::Logic_exprContext * /*ctx*/) override { }
   virtual void exitLogic_expr(botvinaParser::Logic_exprContext * /*ctx*/) override { }
+
+  virtual void enterAdd_expr(botvinaParser::Add_exprContext * /*ctx*/) override { }
+  virtual void exitAdd_expr(botvinaParser::Add_exprContext * /*ctx*/) override { }
+
+  virtual void enterMul_expr(botvinaParser::Mul_exprContext * /*ctx*/) override { }
+  virtual void exitMul_expr(botvinaParser::Mul_exprContext * /*ctx*/) override { }
+
+  virtual void enterOr_expr(botvinaParser::Or_exprContext * /*ctx*/) override { }
+  virtual void exitOr_expr(botvinaParser::Or_exprContext * /*ctx*/) override { }
+
+  virtual void enterAnd_expr(botvinaParser::And_exprContext * /*ctx*/) override { }
+  virtual void exitAnd_expr(botvinaParser::And_exprContext * /*ctx*/) override { }
+
+  virtual void enterEq_expr(botvinaParser::Eq_exprContext * /*ctx*/) override { }
+  virtual void exitEq_expr(botvinaParser::Eq_exprContext * /*ctx*/) override { }
+
+  virtual void enterRel_expr(botvinaParser::Rel_exprContext * /*ctx*/) override { }
+  virtual void exitRel_expr(botvinaParser::Rel_exprContext * /*ctx*/) override { }
 
   virtual void enterParameter_list(botvinaParser::Parameter_listContext * /*ctx*/) override { }
   virtual void exitParameter_list(botvinaParser::Parameter_listContext * /*ctx*/) override { }

@@ -180,21 +180,6 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
       REQUIRE( tree->toStringTree(&parser) == "(draw draw (predefined_figure (line line (identifier l1) (position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 20))) )) (position ( (math_expr (atom (integer 60))) , (math_expr (atom (integer 80))) )) (position ( (math_expr (atom (integer 40))) , (math_expr (atom (integer 80))) )) (color red))) ;)");
   }
 
-  SECTION( "MOVE KEYWORD"){
-      ANTLRInputStream input("move t_letter (30,20) ;");
-      botvinaLexer lexer(&input);
-      CommonTokenStream tokens(&lexer);
-
-      tokens.fill();
-
-      botvinaParser parser(&tokens);
-      tree::ParseTree* tree ;
-
-      tree = parser.move();
-
-      REQUIRE( tree->toStringTree(&parser) == "(move move (identifier t_letter) (position ( (math_expr (atom (integer 30))) , (math_expr (atom (integer 20))) )) ;)");
-  }
-
   SECTION( "RETURN KEYWORD"){
       ANTLRInputStream input("return 0;");
       botvinaLexer lexer(&input);

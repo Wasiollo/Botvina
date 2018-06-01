@@ -24,13 +24,14 @@ public:
 
   enum {
     RuleInput_text = 0, RuleStatement = 1, RuleAssign_statement = 2, RuleIf_statement = 3, 
-    RuleLoop_statement = 4, RuleOperand = 5, RuleFunction_literal = 6, RuleFunction_apply = 7, 
-    RuleClear_statement = 8, RuleExit_statement = 9, RuleReturn_statement = 10, 
-    RuleBlock = 11, RuleBoolean = 12, RuleInteger = 13, RuleIdentifier = 14, 
-    RuleCondition = 15, RulePosition = 16, RuleAtom = 17, RulePredefined_figure = 18, 
-    RuleCircle = 19, RuleQuadrangle = 20, RulePoint = 21, RuleLine = 22, 
-    RuleDraw = 23, RuleMove = 24, RuleSize = 25, RuleColor = 26, RuleExpr = 27, 
-    RuleMath_expr = 28, RuleLogic_expr = 29, RuleParameter_list = 30
+    RuleLoop_statement = 4, RuleFunction_literal = 5, RuleFunction_apply = 6, 
+    RuleClear_statement = 7, RuleExit_statement = 8, RuleReturn_statement = 9, 
+    RuleBlock = 10, RuleBoolean = 11, RuleInteger = 12, RuleIdentifier = 13, 
+    RuleCondition = 14, RulePosition = 15, RuleAtom = 16, RulePredefined_figure = 17, 
+    RuleCircle = 18, RuleQuadrangle = 19, RulePoint = 20, RuleLine = 21, 
+    RuleDraw = 22, RuleSize = 23, RuleColor = 24, RuleExpr = 25, RuleMath_expr = 26, 
+    RuleLogic_expr = 27, RuleAdd_expr = 28, RuleMul_expr = 29, RuleOr_expr = 30, 
+    RuleAnd_expr = 31, RuleEq_expr = 32, RuleRel_expr = 33, RuleParameter_list = 34
   };
 
   botvinaParser(antlr4::TokenStream *input);
@@ -48,7 +49,6 @@ public:
   class Assign_statementContext;
   class If_statementContext;
   class Loop_statementContext;
-  class OperandContext;
   class Function_literalContext;
   class Function_applyContext;
   class Clear_statementContext;
@@ -67,12 +67,17 @@ public:
   class PointContext;
   class LineContext;
   class DrawContext;
-  class MoveContext;
   class SizeContext;
   class ColorContext;
   class ExprContext;
   class Math_exprContext;
   class Logic_exprContext;
+  class Add_exprContext;
+  class Mul_exprContext;
+  class Or_exprContext;
+  class And_exprContext;
+  class Eq_exprContext;
+  class Rel_exprContext;
   class Parameter_listContext; 
 
   class  Input_textContext : public antlr4::ParserRuleContext {
@@ -99,10 +104,9 @@ public:
     If_statementContext *if_statement();
     Function_literalContext *function_literal();
     Function_applyContext *function_apply();
-    OperandContext *operand();
+    DrawContext *draw();
     Clear_statementContext *clear_statement();
     Exit_statementContext *exit_statement();
-    Return_statementContext *return_statement();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -156,20 +160,6 @@ public:
   };
 
   Loop_statementContext* loop_statement();
-
-  class  OperandContext : public antlr4::ParserRuleContext {
-  public:
-    OperandContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    DrawContext *draw();
-    MoveContext *move();
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-   
-  };
-
-  OperandContext* operand();
 
   class  Function_literalContext : public antlr4::ParserRuleContext {
   public:
@@ -311,8 +301,6 @@ public:
     ConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *RND_BRACKET_OP();
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
     Logic_exprContext *logic_expr();
     antlr4::tree::TerminalNode *RND_BRACKET_CL();
 
@@ -378,7 +366,6 @@ public:
     CircleContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *CIRCLE_KEYWORD();
-    IdentifierContext *identifier();
     PositionContext *position();
     SizeContext *size();
     ColorContext *color();
@@ -395,7 +382,6 @@ public:
     QuadrangleContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *QUADRANGLE_KEYWORD();
-    IdentifierContext *identifier();
     PositionContext *position();
     SizeContext *size();
     ColorContext *color();
@@ -412,7 +398,6 @@ public:
     PointContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *POINT_KEYWORD();
-    IdentifierContext *identifier();
     PositionContext *position();
     ColorContext *color();
 
@@ -428,10 +413,9 @@ public:
     LineContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *LINE_KEYWORD();
-    IdentifierContext *identifier();
-    ColorContext *color();
     std::vector<PositionContext *> position();
     PositionContext* position(size_t i);
+    ColorContext *color();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -454,22 +438,6 @@ public:
   };
 
   DrawContext* draw();
-
-  class  MoveContext : public antlr4::ParserRuleContext {
-  public:
-    MoveContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *MOVE_KEYWORD();
-    IdentifierContext *identifier();
-    PositionContext *position();
-    antlr4::tree::TerminalNode *SEMICOLON();
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-   
-  };
-
-  MoveContext* move();
 
   class  SizeContext : public antlr4::ParserRuleContext {
   public:
@@ -518,12 +486,8 @@ public:
   public:
     Math_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<AtomContext *> atom();
-    AtomContext* atom(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> MUL_OPERATOR();
-    antlr4::tree::TerminalNode* MUL_OPERATOR(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> ADD_OPERATOR();
-    antlr4::tree::TerminalNode* ADD_OPERATOR(size_t i);
+    Add_exprContext *add_expr();
+    Mul_exprContext *mul_expr();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -536,14 +500,72 @@ public:
   public:
     Logic_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    Or_exprContext *or_expr();
+    And_exprContext *and_expr();
+    Eq_exprContext *eq_expr();
+    Rel_exprContext *rel_expr();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Logic_exprContext* logic_expr();
+
+  class  Add_exprContext : public antlr4::ParserRuleContext {
+  public:
+    Add_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     std::vector<AtomContext *> atom();
     AtomContext* atom(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> RELATION_OPERATOR();
-    antlr4::tree::TerminalNode* RELATION_OPERATOR(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> EQ_OPERATOR();
-    antlr4::tree::TerminalNode* EQ_OPERATOR(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> ADD_OPERATOR();
+    antlr4::tree::TerminalNode* ADD_OPERATOR(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Add_exprContext* add_expr();
+
+  class  Mul_exprContext : public antlr4::ParserRuleContext {
+  public:
+    Mul_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<AtomContext *> atom();
+    AtomContext* atom(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> MUL_OPERATOR();
+    antlr4::tree::TerminalNode* MUL_OPERATOR(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Mul_exprContext* mul_expr();
+
+  class  Or_exprContext : public antlr4::ParserRuleContext {
+  public:
+    Or_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<AtomContext *> atom();
+    AtomContext* atom(size_t i);
     std::vector<antlr4::tree::TerminalNode *> OR_OPERATOR();
     antlr4::tree::TerminalNode* OR_OPERATOR(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Or_exprContext* or_expr();
+
+  class  And_exprContext : public antlr4::ParserRuleContext {
+  public:
+    And_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<AtomContext *> atom();
+    AtomContext* atom(size_t i);
     std::vector<antlr4::tree::TerminalNode *> AND_OPERATOR();
     antlr4::tree::TerminalNode* AND_OPERATOR(size_t i);
 
@@ -552,7 +574,37 @@ public:
    
   };
 
-  Logic_exprContext* logic_expr();
+  And_exprContext* and_expr();
+
+  class  Eq_exprContext : public antlr4::ParserRuleContext {
+  public:
+    Eq_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<AtomContext *> atom();
+    AtomContext* atom(size_t i);
+    antlr4::tree::TerminalNode *EQ_OPERATOR();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Eq_exprContext* eq_expr();
+
+  class  Rel_exprContext : public antlr4::ParserRuleContext {
+  public:
+    Rel_exprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<AtomContext *> atom();
+    AtomContext* atom(size_t i);
+    antlr4::tree::TerminalNode *RELATION_OPERATOR();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Rel_exprContext* rel_expr();
 
   class  Parameter_listContext : public antlr4::ParserRuleContext {
   public:
