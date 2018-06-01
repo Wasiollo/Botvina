@@ -5,7 +5,7 @@
 
 namespace ast {
 
-struct Rel : public Node {
+struct RelStatement : public Node {
   enum Type {
     LT, LE,
     GT, GE
@@ -13,7 +13,7 @@ struct Rel : public Node {
   NodeObject left;
   NodeObject right;
 
-  Rel(Type t)
+  RelStatement(Type t)
     : type(t) {
   }
 };

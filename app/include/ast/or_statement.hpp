@@ -8,12 +8,8 @@
 
 namespace ast {
 
-struct LoopStatement : public Node {
-    NodeObject condition;
-    std:vector<NodeObject> operations;
-
-  LoopStatement(){
-  }
+struct OrStatement : public Node {
+    std::vector<NodeObject> operands;
 };
 
 } //ast

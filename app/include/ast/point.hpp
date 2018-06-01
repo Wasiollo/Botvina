@@ -14,7 +14,7 @@ struct Point : public Node {
     NodeObject x;
     NodeObject y;
 
-  Point(){
+  Point(Color c): color(c){
   }
 };
 

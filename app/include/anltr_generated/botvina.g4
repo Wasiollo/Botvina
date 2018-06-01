@@ -11,25 +11,25 @@ statement
  
  
 assign_statement
-    : identifier EQ math_expr SEMICOLON
+    : identifier EQ add_expr SEMICOLON
     ;
  
  
 if_statement
-    : IF_KEYWORD condition block
+    : IF_KEYWORD condition operation_block
     ;
  
  
 loop_statement
-    : WHEN_KEYWORD condition block
+    : WHEN_KEYWORD condition operation_block
     ; 
  
 function_literal
-    : FUNCTION_KEYWORD identifier RND_BRACKET_OP parameter_list RND_BRACKET_CL block
+    : FUNCTION_KEYWORD identifier RND_BRACKET_OP identifier_list? RND_BRACKET_CL block
     ;
  
 function_apply
-    : identifier RND_BRACKET_OP parameter_list RND_BRACKET_CL SEMICOLON
+    : identifier RND_BRACKET_OP parameter_list? RND_BRACKET_CL SEMICOLON
     ;
  
 clear_statement
@@ -47,9 +47,9 @@ return_statement
 block
     : SET_BRACKET_OP (statement)* (return_statement)? SET_BRACKET_CL
     ;
- 
-boolean
-    : FALSE_KEYWORD | TRUE_KEYWORD
+
+operation_block
+    : SET_BRACKET_OP (statement)* SET_BRACKET_CL
     ;
  
 integer
@@ -61,15 +61,15 @@ identifier
     ;
  
 condition
-    : RND_BRACKET_OP logic_expr RND_BRACKET_CL
+    : RND_BRACKET_OP or_expr RND_BRACKET_CL
     ;
  
 position
-    : RND_BRACKET_OP math_expr CMM math_expr RND_BRACKET_CL
+    : RND_BRACKET_OP add_expr CMM add_expr RND_BRACKET_CL
     ;
  
 atom
-    : integer | boolean | function_apply | function_literal | identifier
+    : integer | function_apply | function_literal | identifier
     ;
  
 predefined_figure
@@ -105,19 +105,11 @@ color
     ;
 
 expr
-    : (math_expr | logic_expr)
-    ;
-
-math_expr
-    : (add_expr | mul_expr)
-    ;
-
-logic_expr
-    : (or_expr | and_expr | eq_expr | rel_expr)
+    : (add_expr | or_expr)
     ;
 
 add_expr
-    : atom (ADD_OPERATOR atom)*
+    : mul_expr (ADD_OPERATOR mul_expr)*
     ;
 
 mul_expr
@@ -125,15 +117,15 @@ mul_expr
     ;
 
 or_expr
-    : atom ( OR_OPERATOR atom)*
+    : and_expr ( OR_OPERATOR and_expr)*
     ;
 
 and_expr
-    : atom (AND_OPERATOR atom)*
+    : eq_expr (AND_OPERATOR eq_expr)*
     ;
 
 eq_expr
-    : atom (EQ_OPERATOR atom)?
+    : rel_expr (EQ_OPERATOR rel_expr)?
     ;
 
 rel_expr
@@ -141,7 +133,11 @@ rel_expr
     ;
 
 parameter_list
-    : (expr (CMM expr)*)?
+    : expr (CMM expr)*
+    ;
+
+identifier_list
+    : identifier (CMM identifier)*
     ;
  
 INTEGER
@@ -198,14 +194,6 @@ EXIT_KEYWORD
  
 RETURN_KEYWORD
     : 'return'
-    ;
- 
-TRUE_KEYWORD
-    : 'True'
-    ;
- 
-FALSE_KEYWORD
-    : 'False'
     ;
  
 CIRCLE_KEYWORD

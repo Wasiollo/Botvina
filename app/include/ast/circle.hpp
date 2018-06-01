@@ -10,12 +10,12 @@
 namespace ast {
 
 struct Circle : public Node {
-    int size;
-    Color color;
+  int size;
+  Color color;
   NodeObject x;
   NodeObject y;
 
-  Circle(){
+  Circle(int s, Color c): size(s), color(c){
   }
 };
 

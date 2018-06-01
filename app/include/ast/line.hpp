@@ -16,7 +16,7 @@ struct Line : public Node {
     NodeObject end_x;
     NodeObject end_y;
 
-  Line(){
+  Line(Color c): color(c){
   }
 };
 

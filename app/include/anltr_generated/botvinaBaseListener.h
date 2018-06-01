@@ -49,8 +49,8 @@ public:
   virtual void enterBlock(botvinaParser::BlockContext * /*ctx*/) override { }
   virtual void exitBlock(botvinaParser::BlockContext * /*ctx*/) override { }
 
-  virtual void enterBoolean(botvinaParser::BooleanContext * /*ctx*/) override { }
-  virtual void exitBoolean(botvinaParser::BooleanContext * /*ctx*/) override { }
+  virtual void enterOperation_block(botvinaParser::Operation_blockContext * /*ctx*/) override { }
+  virtual void exitOperation_block(botvinaParser::Operation_blockContext * /*ctx*/) override { }
 
   virtual void enterInteger(botvinaParser::IntegerContext * /*ctx*/) override { }
   virtual void exitInteger(botvinaParser::IntegerContext * /*ctx*/) override { }
@@ -94,12 +94,6 @@ public:
   virtual void enterExpr(botvinaParser::ExprContext * /*ctx*/) override { }
   virtual void exitExpr(botvinaParser::ExprContext * /*ctx*/) override { }
 
-  virtual void enterMath_expr(botvinaParser::Math_exprContext * /*ctx*/) override { }
-  virtual void exitMath_expr(botvinaParser::Math_exprContext * /*ctx*/) override { }
-
-  virtual void enterLogic_expr(botvinaParser::Logic_exprContext * /*ctx*/) override { }
-  virtual void exitLogic_expr(botvinaParser::Logic_exprContext * /*ctx*/) override { }
-
   virtual void enterAdd_expr(botvinaParser::Add_exprContext * /*ctx*/) override { }
   virtual void exitAdd_expr(botvinaParser::Add_exprContext * /*ctx*/) override { }
 
@@ -120,6 +114,9 @@ public:
 
   virtual void enterParameter_list(botvinaParser::Parameter_listContext * /*ctx*/) override { }
   virtual void exitParameter_list(botvinaParser::Parameter_listContext * /*ctx*/) override { }
+
+  virtual void enterIdentifier_list(botvinaParser::Identifier_listContext * /*ctx*/) override { }
+  virtual void exitIdentifier_list(botvinaParser::Identifier_listContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

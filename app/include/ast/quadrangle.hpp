@@ -12,11 +12,11 @@ namespace ast {
 
 struct Quadrangle : public Node {
     Color color;
+    int size;
     NodeObject origin_x;
     NodeObject origin_y;
-    int size;
 
-  Quadrangle(){
+  Quadrangle(int s, Color c): size(s), color(c){
   }
 };
 

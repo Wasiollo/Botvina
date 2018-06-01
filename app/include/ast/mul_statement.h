@@ -14,7 +14,8 @@ namespace ast {
 
 struct MulStatement : public Node {
   std::vector<MulType> mulOps;
-  std::vector<NodeObject> ops;
+  std::vector<NodeObject> operands;
+  MulStatement(const std::vector<MulType>& ops) : mulOps(ops) {}
 
 };
 

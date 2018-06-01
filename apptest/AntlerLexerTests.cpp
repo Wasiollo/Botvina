@@ -160,20 +160,6 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
       REQUIRE( token->getType() == lexer.RETURN_KEYWORD );
       REQUIRE( token->getText() == "return" );
     }
-
-    SECTION( "True" ) {
-
-      auto token = tokens.get(8);
-      REQUIRE( token->getType() == lexer.TRUE_KEYWORD );
-      REQUIRE( token->getText() == "True" );
-    }
-
-    SECTION( "False" ) {
-
-      auto token = tokens.get(9);
-      REQUIRE( token->getType() == lexer.FALSE_KEYWORD );
-      REQUIRE( token->getText() == "False" );
-    }
   }
 
   SECTION( "MATHEMATICA OPERATIONS" ) {

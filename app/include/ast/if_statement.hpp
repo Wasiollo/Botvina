@@ -9,11 +9,8 @@
 namespace ast {
 
 struct IfStatement : public Node {
-    NodeObject condition;
+  NodeObject condition;
   std::vector<NodeObject> ops;
-
-  IfStatement(){
-  }
 };
 
 } //ast

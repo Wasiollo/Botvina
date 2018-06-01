@@ -6,6 +6,6 @@ enum Color{
     BLUE,
     GREEN,
     BLACK
-}
+};
 
 #endif // COLOR_HPP

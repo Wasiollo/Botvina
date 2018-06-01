@@ -14,7 +14,7 @@ namespace ast {
 
 struct AddStatement : public Node {
   std::vector<AddType> addOps;
-  std::vector<NodeObject> ops;
+  std::vector<NodeObject> operands;
 
   AddStatement(const std::vector<AddType>& ops) : addOps(ops) {}
 

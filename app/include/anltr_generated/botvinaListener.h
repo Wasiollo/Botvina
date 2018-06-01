@@ -47,8 +47,8 @@ public:
   virtual void enterBlock(botvinaParser::BlockContext *ctx) = 0;
   virtual void exitBlock(botvinaParser::BlockContext *ctx) = 0;
 
-  virtual void enterBoolean(botvinaParser::BooleanContext *ctx) = 0;
-  virtual void exitBoolean(botvinaParser::BooleanContext *ctx) = 0;
+  virtual void enterOperation_block(botvinaParser::Operation_blockContext *ctx) = 0;
+  virtual void exitOperation_block(botvinaParser::Operation_blockContext *ctx) = 0;
 
   virtual void enterInteger(botvinaParser::IntegerContext *ctx) = 0;
   virtual void exitInteger(botvinaParser::IntegerContext *ctx) = 0;
@@ -92,12 +92,6 @@ public:
   virtual void enterExpr(botvinaParser::ExprContext *ctx) = 0;
   virtual void exitExpr(botvinaParser::ExprContext *ctx) = 0;
 
-  virtual void enterMath_expr(botvinaParser::Math_exprContext *ctx) = 0;
-  virtual void exitMath_expr(botvinaParser::Math_exprContext *ctx) = 0;
-
-  virtual void enterLogic_expr(botvinaParser::Logic_exprContext *ctx) = 0;
-  virtual void exitLogic_expr(botvinaParser::Logic_exprContext *ctx) = 0;
-
   virtual void enterAdd_expr(botvinaParser::Add_exprContext *ctx) = 0;
   virtual void exitAdd_expr(botvinaParser::Add_exprContext *ctx) = 0;
 
@@ -118,6 +112,9 @@ public:
 
   virtual void enterParameter_list(botvinaParser::Parameter_listContext *ctx) = 0;
   virtual void exitParameter_list(botvinaParser::Parameter_listContext *ctx) = 0;
+
+  virtual void enterIdentifier_list(botvinaParser::Identifier_listContext *ctx) = 0;
+  virtual void exitIdentifier_list(botvinaParser::Identifier_listContext *ctx) = 0;
 
 
 };

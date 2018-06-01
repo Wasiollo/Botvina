@@ -9,7 +9,7 @@
 namespace ast {
 
 struct AndStatement : public Node {
-  std::vector<NodeObject> ops;
+  std::vector<NodeObject> operands;
 
   AndStatement(){
   }

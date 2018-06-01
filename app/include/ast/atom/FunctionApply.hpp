@@ -8,11 +8,11 @@
 
 namespace ast {
 
-struct FuncApply : public Node {
+struct FunctionApply : public Node {
   std::string name;
   std::vector<NodeObject> exprs;
 
-  FuncApply(const std::string& n)
+  FunctionApply(const std::string& n)
     : name(n) {
   }
 };

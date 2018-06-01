@@ -11,13 +11,14 @@ namespace ast {
 struct EqStatement : public Node {
     enum Type {
       EQ,
-        NEQ
+      NEQ
     } type;
-  std::vector<NodeObject> ops;
+    NodeObject left;
+    NodeObject right;
 
-  EqStatement(Type t)
-      : type(t){
-  }
+    EqStatement(Type t)
+      : type(t) {
+    }
 };
 
 } //ast

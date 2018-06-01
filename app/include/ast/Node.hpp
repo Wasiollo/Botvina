@@ -21,7 +21,7 @@ struct NodeObject {
     ADD,
     MUL,
     ID,
-    INT, BOOL,
+    INT,
     CIRCLE,
     IF_STATEMENT,
     LOOP_STATEMENT,
@@ -31,10 +31,11 @@ struct NodeObject {
     LINE,
     POINT,
     EXIT,
-    CLEAR
+    CLEAR,
+    NONE
   } type;
 
-  std::unique_ptr<Node> object;
+  std::shared_ptr<Node> object;
 
   NodeObject()
     : type(Type::NONE) {

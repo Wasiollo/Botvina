@@ -10,7 +10,7 @@ namespace ast {
 
 struct AssignStatement : public Node {
   std::string id;
-  std::vector<NodeObject> ops;
+  NodeObject r_val;
 
   AssignStatement(std::string id): id(id){
   }
