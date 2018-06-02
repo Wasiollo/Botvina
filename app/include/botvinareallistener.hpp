@@ -3,6 +3,7 @@
 #include "anltr_generated/botvinaBaseListener.h"
 #include "antlr4-runtime.h"
 #include "ast/Node.hpp"
+#include "ast/ast.hpp"
 
 
 struct AstNodeBox {
@@ -56,6 +57,8 @@ public:
     void enterEq_expr(botvinaParser::Eq_exprContext* ctx);
 
     void enterRel_expr(botvinaParser::Rel_exprContext* ctx);
+
+    ast::Ast getAst();
 
 
 

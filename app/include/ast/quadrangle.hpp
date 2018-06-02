@@ -13,8 +13,8 @@ namespace ast {
 struct Quadrangle : public Node {
     Color color;
     int size;
-    NodeObject origin_x;
-    NodeObject origin_y;
+    NodeObject x;
+    NodeObject y;
 
   Quadrangle(int s, Color c): size(s), color(c){
   }

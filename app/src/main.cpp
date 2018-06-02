@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
   BotvinaRealListener botvina_real_listener ;
 
   tree::ParseTreeWalker::DEFAULT.walk(&botvina_real_listener, tree);
+  ast::Ast ast = botvina_real_listener.getAst();
 
   QApplication a(argc, argv);
       MainWindow w;

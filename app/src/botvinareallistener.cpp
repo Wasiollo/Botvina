@@ -19,6 +19,7 @@
 #include "ast/or_statement.hpp"
 #include "ast/and_statement.h"
 #include "ast/rel_statement.hpp"
+#include "ast/ast.hpp"
 #include <stack>
 
 using namespace ast;
@@ -310,10 +311,126 @@ void BotvinaRealListener::unwindStack(){
             }
             break;
 
+            case NodeObject::IF_STATEMENT:
+            {
+                IfStatement* ptr = dynamic_cast<IfStatement*>(parent.node);
+                if(!ptr->condition){
+                    ptr->condition.type = child.type;
+                    ptr->condition.object.reset(child.node);
+                } else {
+                    ptr->ops.emplace_back(child.node, child.type);
+                }
+            }
+            break;
+
+            case NodeObject::LOOP_STATEMENT:
+            {
+                LoopStatement* ptr = dynamic_cast<LoopStatement*>(parent.node);
+                if(!ptr->condition){
+                    ptr->condition.type = child.type;
+                    ptr->condition.object.reset(child.node);
+                } else {
+                    ptr->ops.emplace_back(child.node, child.type);
+                }
+
+            }
+            break;
+
+            case NodeObject::FUNCTION_LITERAL:
+            {
+                FunctionLiteral* ptr = dynamic_cast<FunctionLiteral*>(parent.node);
+                if(parent.left>1){
+                    ptr->ops.emplace_back(child.node, child.type);
+                } else {
+
+                    if(ptr->ret.type == NodeObject::NONE)
+                    {
+                        ptr->ops.emplace_back(child.node, child.type);
+                    } else {
+                        ptr->ret.type = child.type;
+                        ptr->ret.object.reset(child.node);
+                    }
+                }
+            }
+            break;
+
+            case NodeObject::FUNCTION_APPLY:
+            {
+                FunctionApply* ptr = dynamic_cast<FunctionApply*>(parent.node);
+                ptr->exprs.emplace_back(child.node, child.type);
+
+            }
+            break;
+
+            case NodeObject::CIRCLE:
+            {
+                Circle* ptr = dynamic_cast<Circle*>(parent.node);
+                if(!ptr->x){
+                    ptr->x.type = child.type;
+                    ptr->x.object.reset(child.node);
+                } else {
+                    ptr->y.type = child.type;
+                    ptr->y.object.reset(child.node);
+                }
+            }
+            break;
+
+            case NodeObject::QUADRANGLE:
+            {
+                Quadrangle* ptr = dynamic_cast<Quadrangle*>(parent.node);
+                if(!ptr->x){
+                    ptr->x.type = child.type;
+                    ptr->x.object.reset(child.node);
+                } else {
+                    ptr->y.type = child.type;
+                    ptr->y.object.reset(child.node);
+                }
+            }
+            break;
+            case NodeObject::POINT:
+            {
+                Point* ptr = dynamic_cast<Point*>(parent.node);
+                if(!ptr->x){
+                    ptr->x.type = child.type;
+                    ptr->x.object.reset(child.node);
+                } else {
+                    ptr->y.type = child.type;
+                    ptr->y.object.reset(child.node);
+                }
+            }
+            break;
+
+            case NodeObject::LINE:
+            {
+                Line* ptr = dynamic_cast<Line*>(parent.node);
+                if(!ptr->origin_x){
+                    ptr->origin_x.type = child.type;
+                    ptr->origin_x.object.reset(child.node);
+                } else if(!ptr->origin_y) {
+                    ptr->origin_y.type = child.type;
+                    ptr->origin_y.object.reset(child.node);
+                } else if(!ptr->end_x) {
+                    ptr->end_x.type = child.type;
+                    ptr->end_x.object.reset(child.node);
+                } else {
+                    ptr->end_y.type = child.type;
+                    ptr->end_y.object.reset(child.node);
+                }
+            }
+            break;
+
         }
         parent.left--;
 
         if(parent.left > 0)
             break;
     }
+
+}
+
+
+Ast BotvinaRealListener::getAst(){
+    AstNodeBox topBox = astNodeBoxStack.top();
+    astNodeBoxStack.pop();
+    return Ast(topBox.node, topBox.type);
 }

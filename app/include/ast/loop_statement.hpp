@@ -10,7 +10,7 @@ namespace ast {
 
 struct LoopStatement : public Node {
     NodeObject condition;
-    std::vector<NodeObject> operands;
+    std::vector<NodeObject> ops;
 };
 
 } //ast

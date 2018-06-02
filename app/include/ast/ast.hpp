@@ -12,7 +12,7 @@ namespace ast {
 struct Ast : public Node {
   NodeObject root;
 
-  ast(Node* n, NodeObject::Type t): root(n,t){
+  Ast(Node* n, NodeObject::Type t): root(n,t){
 
   }
 };
