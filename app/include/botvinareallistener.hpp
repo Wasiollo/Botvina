@@ -18,6 +18,8 @@ AstNodeBox(ast::Node* n, ast::NodeObject::Type t, int childrenLeft = 0) : type(t
 
 class BotvinaRealListener : public botvinaBaseListener{
     std::stack<AstNodeBox> astNodeBoxStack;
+    bool ignoreNextIdentifier;
+    bool ignoreNextInteger;
 
 public:
     void enterAssign_statement(botvinaParser::Assign_statementContext* ctx);
@@ -60,6 +62,7 @@ public:
 
     ast::Ast getAst();
 
+    BotvinaRealListener():ignoreNextIdentifier(false), ignoreNextInteger(false){}
 
 
 private:

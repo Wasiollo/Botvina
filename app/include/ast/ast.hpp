@@ -15,6 +15,8 @@ struct Ast : public Node {
   Ast(Node* n, NodeObject::Type t): root(n,t){
 
   }
+
+  std::string toString() const;
 };
 
 } //ast

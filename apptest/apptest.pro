@@ -16,17 +16,12 @@ INCLUDEPATH += $$PROJECT_DIR \
        $$PROJECT_DIR/include/antlr4-runtime
 
 PROJECT_SOURCES = \
-    $$PROJECT_DIR/src/Input.cpp \
-    $$PROJECT_DIR/src/Lexer.cpp \
     $$PROJECT_DIR/include/anltr_generated/botvinaBaseListener.cpp \
     $$PROJECT_DIR/include/anltr_generated/botvinaLexer.cpp \
     $$PROJECT_DIR/include/anltr_generated/botvinaListener.cpp \
     $$PROJECT_DIR/include/anltr_generated/botvinaParser.cpp \
 
 PROJECT_HEADERS = \
-    $$PROJECT_DIR/include/Input.hpp \
-    $$PROJECT_DIR/include/Lexer.hpp \
-    $$PROJECT_DIR/include/Token.hpp \
     $$PROJECT_DIR/include/anltr_generated/botvinaBaseListener.h \
     $$PROJECT_DIR/include/anltr_generated/botvinaLexer.h \
     $$PROJECT_DIR/include/anltr_generated/botvinaListener.h \
@@ -38,10 +33,8 @@ SOURCES +=  \
     tst_apptests.cpp \
     main.cpp\
     $$PROJECT_SOURCES \
-    InputTests.cpp \
-    LexerTests.cpp \
-    AntlerLexerTests.cpp \
-    ParserTests.cpp
+    AntlerLexerTests.cpp
+
 
 HEADERS += \
     $$PROJECT_HEADERS

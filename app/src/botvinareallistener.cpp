@@ -29,9 +29,7 @@ void BotvinaRealListener::enterAssign_statement(botvinaParser::Assign_statementC
     const std::string& vname = ctx->identifier()->getText();
 
     astNodeBoxStack.emplace(new AssignStatement(vname), NodeObject::ASSIGN, 1);
-
-    std::cout<<"kurwa"<<std::endl;
-    ctx->children[0]->getText();
+    ignoreNextIdentifier = true;
 }
 
 void BotvinaRealListener::enterIf_statement(botvinaParser::If_statementContext* ctx){
@@ -76,6 +74,8 @@ void BotvinaRealListener::enterFunction_literal(botvinaParser::Function_literalC
             unwindStack();
     }
 
+    ignoreNextIdentifier = true;
+
 }
 
 void BotvinaRealListener::enterFunction_apply(botvinaParser::Function_applyContext* ctx){
@@ -93,6 +93,7 @@ void BotvinaRealListener::enterFunction_apply(botvinaParser::Function_applyConte
     if(nchildren == 0){
             unwindStack();
     }
+    ignoreNextIdentifier = true;
 }
 
 void BotvinaRealListener::enterClear_statement(botvinaParser::Clear_statementContext* ctx){
@@ -108,14 +109,22 @@ void BotvinaRealListener::enterExit_statement(botvinaParser::Exit_statementConte
 
 
 void BotvinaRealListener::enterInteger(botvinaParser::IntegerContext* ctx){
-    astNodeBoxStack.emplace(new Integer(std::stoi(ctx->getText())), NodeObject::INT);
-    unwindStack();
+    if(!ignoreNextInteger){
+        astNodeBoxStack.emplace(new Integer(std::stoi(ctx->getText())), NodeObject::INT);
+        unwindStack();
+    } else {
+        ignoreNextInteger = false;
+    }
 }
 
 void BotvinaRealListener::enterIdentifier(botvinaParser::IdentifierContext* ctx){
+    if(!ignoreNextIdentifier){
+        astNodeBoxStack.emplace(new Identifier(ctx->getText()), NodeObject::ID);
+        unwindStack();
+    } else {
+        ignoreNextIdentifier = false;
+    }
 
-    astNodeBoxStack.emplace(new Identifier(ctx->getText()), NodeObject::ID);
-    unwindStack();
 }
 
 Color stringToColor(const std::string& color){
@@ -134,6 +143,7 @@ void BotvinaRealListener::enterCircle(botvinaParser::CircleContext* ctx) {
     int size = std::stoi(ctx->size()->getText());
 
     astNodeBoxStack.emplace(new Circle(size,color), NodeObject::CIRCLE, 2);
+    ignoreNextInteger=true;
 }
 
 void BotvinaRealListener::enterQuadrangle(botvinaParser::QuadrangleContext* ctx){
@@ -141,6 +151,7 @@ void BotvinaRealListener::enterQuadrangle(botvinaParser::QuadrangleContext* ctx)
     int size = std::stoi(ctx->size()->getText());
 
     astNodeBoxStack.emplace(new Quadrangle(size,color), NodeObject::QUADRANGLE,2);
+    ignoreNextInteger=true;
 
 }
 

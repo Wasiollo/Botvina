@@ -366,9 +366,9 @@ public:
     CircleContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *CIRCLE_KEYWORD();
-    PositionContext *position();
     SizeContext *size();
     ColorContext *color();
+    PositionContext *position();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -382,9 +382,9 @@ public:
     QuadrangleContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *QUADRANGLE_KEYWORD();
-    PositionContext *position();
     SizeContext *size();
     ColorContext *color();
+    PositionContext *position();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -398,8 +398,8 @@ public:
     PointContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *POINT_KEYWORD();
-    PositionContext *position();
     ColorContext *color();
+    PositionContext *position();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -413,9 +413,9 @@ public:
     LineContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *LINE_KEYWORD();
+    ColorContext *color();
     std::vector<PositionContext *> position();
     PositionContext* position(size_t i);
-    ColorContext *color();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

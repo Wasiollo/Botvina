@@ -1,4 +1,3 @@
-#include "include/Lexer.hpp"
 #include "catch.hpp"
 #include "antlr4-runtime.h"
 #include "include/anltr_generated/botvinaLexer.h"

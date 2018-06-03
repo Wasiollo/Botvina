@@ -77,19 +77,19 @@ predefined_figure
     ;
  
 circle
-    : CIRCLE_KEYWORD position size color
+    : CIRCLE_KEYWORD size color position
     ;
  
 quadrangle
-    : QUADRANGLE_KEYWORD position size color
+    : QUADRANGLE_KEYWORD size color position
     ;
  
 point
-    : POINT_KEYWORD position color
+    : POINT_KEYWORD color position
     ;
  
 line
-    : LINE_KEYWORD position position color
+    : LINE_KEYWORD color position position
     ;
  
 draw

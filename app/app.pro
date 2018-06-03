@@ -27,47 +27,59 @@ INCLUDEPATH += \
         include/antlr4-runtime \
         include
 
-SOURCES += \
+SOURCES += src/main.cpp \
+    src/ast.cpp \
+    src/botvinareallistener.cpp \
+    src/figure/circlefigure.cpp \
+    src/drawwindow.cpp \
+    src/evaluator/evaluator.cpp \
+    src/figure/linefigure.cpp \
+    src/mainwindow.cpp \
+    src/evaluator/memoryarena.cpp \
+    src/figure/pointfigure.cpp \
+    src/figure/quadranglefigure.cpp \
     include/anltr_generated/botvinaBaseListener.cpp \
     include/anltr_generated/botvinaLexer.cpp \
     include/anltr_generated/botvinaListener.cpp \
-    include/anltr_generated/botvinaParser.cpp \
-    src/Input.cpp \
-    src/Lexer.cpp \
-    src/main.cpp \
-    src/mainwindow.cpp \
-    src/botvinareallistener.cpp
+    include/anltr_generated/botvinaParser.cpp
 
 HEADERS += \
         include/mainwindow.h \
-    include/Token.hpp \
-    include/Input.hpp \
-    include/Lexer.hpp \
     include/anltr_generated/botvinaBaseListener.h \
     include/anltr_generated/botvinaLexer.h \
     include/anltr_generated/botvinaListener.h \
     include/anltr_generated/botvinaParser.h \
-    include/ast/atom/Integer.hpp \
-    include/ast/Node.hpp \
     include/ast/atom/FunctionApply.hpp \
     include/ast/atom/FunctionLiteral.hpp \
     include/ast/atom/Identifier.hpp \
-    include/botvinareallistener.hpp \
+    include/ast/atom/Integer.hpp \
+    include/ast/add_statement.h \
     include/ast/and_statement.h \
     include/ast/assign_statement.h \
+    include/ast/ast.hpp \
     include/ast/circle.hpp \
+    include/ast/color.hpp \
     include/ast/eq_statement.hpp \
     include/ast/if_statement.hpp \
     include/ast/line.hpp \
     include/ast/loop_statement.hpp \
+    include/ast/mul_statement.h \
+    include/ast/Node.hpp \
     include/ast/or_statement.hpp \
     include/ast/point.hpp \
     include/ast/quadrangle.hpp \
-    include/ast/color.hpp \
     include/ast/rel_statement.hpp \
-    include/ast/ast.hpp \
-    include/ast/add_statement.h \
-    include/ast/mul_statement.h
+    include/figure/circlefigure.hpp \
+    include/figure/figure.hpp \
+    include/figure/linefigure.hpp \
+    include/figure/pointfigure.hpp \
+    include/figure/quadranglefigure.hpp \
+    include/botvinareallistener.hpp \
+    include/botvinaruntimeexception.hpp \
+    include/drawwindow.hpp \
+    include/evaluator/evaluator.hpp \
+    include/evaluator/memoryarena.hpp
+
 
 FORMS += \
         forms/mainwindow.ui

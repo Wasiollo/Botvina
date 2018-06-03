@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
+#include <QKeyEvent>
+#include <QPaintEvent>
+#include "evaluator/evaluator.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +20,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void keyPressEvent(QKeyEvent *key_event);
+    Evaluator eval;
+
+
 };
 
 #endif // MAINWINDOW_H
