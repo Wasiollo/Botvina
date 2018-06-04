@@ -25,14 +25,14 @@ Type `qmake` to build app;
 Program run as standalone desktop app. Program reads input from specially created command-line and
 perform actions .
 
-####Examples:
+#### Examples:
 ![Alt text](examples/images/1.png?raw=true "First Example")
 
 ![Alt text](examples/images/2.png?raw=true "First Example")
 
 ![Alt text](examples/images/3.png?raw=true "First Example")
 
-##Author
+## Author
 
 Mateusz Wasiak
  
