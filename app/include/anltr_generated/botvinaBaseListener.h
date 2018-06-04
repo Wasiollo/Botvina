@@ -16,9 +16,6 @@
 class  botvinaBaseListener : public botvinaListener {
 public:
 
-  virtual void enterInput_text(botvinaParser::Input_textContext * /*ctx*/) override { }
-  virtual void exitInput_text(botvinaParser::Input_textContext * /*ctx*/) override { }
-
   virtual void enterStatement(botvinaParser::StatementContext * /*ctx*/) override { }
   virtual void exitStatement(botvinaParser::StatementContext * /*ctx*/) override { }
 

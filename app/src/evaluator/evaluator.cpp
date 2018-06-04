@@ -278,7 +278,7 @@ void Evaluator::evaluateAssign(const EvalStack& stack, ValueStack& vstack) {
 
   AssignStatement* assignptr = dynamic_cast<AssignStatement*>(box.node);
 
-  const MemoryArena::Variable& rval = vstack.top();
+  const BotvinaMemory::Variable& rval = vstack.top();
 
   const std::string& vname = assignptr->id;
 
@@ -300,7 +300,7 @@ void Evaluator::evaluateOr(const EvalStack& stack, ValueStack& vstack) {
   size_t i = 0;
 
   for(; i<noperands; ++i) {
-    const MemoryArena::Variable& var = vstack.top();
+    const BotvinaMemory::Variable& var = vstack.top();
 
     if(var->vtype != VarType::INT) {
       throw BotvinaRuntimeException("Logical or operand must be a INT");
@@ -329,7 +329,7 @@ void Evaluator::evaluateAnd(const EvalStack& stack, ValueStack& vstack) {
   size_t i = 0;
 
   for(; i<noperands; ++i) {
-    const MemoryArena::Variable& var = vstack.top();
+    const BotvinaMemory::Variable& var = vstack.top();
 
     if(var->vtype != VarType::INT) {
       throw BotvinaRuntimeException("Logical and operand must be a INT");
@@ -353,8 +353,8 @@ void Evaluator::evaluateRel(const EvalStack& stack, ValueStack& vstack) {
 
   RelStatement* relptr = dynamic_cast<RelStatement*>(box.node);
 
-  MemoryArena::Variable leftv = vstack.top(); vstack.pop();
-  const MemoryArena::Variable& rightv = vstack.top();
+  BotvinaMemory::Variable leftv = vstack.top(); vstack.pop();
+  const BotvinaMemory::Variable& rightv = vstack.top();
 
   if(leftv->vtype != VarType::INT || rightv->vtype != VarType::INT) {
     throw BotvinaRuntimeException("Relation operand must be an Integer");
@@ -393,7 +393,7 @@ void Evaluator::evaluateAdd(const EvalStack& stack, ValueStack& vstack) {
   int result = 0;
 
   for(auto op : addptr->addOps) {
-    const MemoryArena::Variable& var = vstack.top();
+    const BotvinaMemory::Variable& var = vstack.top();
 
     if(var->vtype != VarType::INT) {
         throw BotvinaRuntimeException("");
@@ -423,7 +423,7 @@ void Evaluator::evaluateMul(const EvalStack& stack, ValueStack& vstack) {
   int result = 1;
 
   for(auto op : mulptr->mulOps) {
-    const MemoryArena::Variable& var = vstack.top();
+    const BotvinaMemory::Variable& var = vstack.top();
 
     if(var->vtype != VarType::INT)
       throw BotvinaRuntimeException("Multiplication operand must be an Integer");
@@ -467,8 +467,8 @@ void Evaluator::evaluateEq(const EvalStack &stack, ValueStack &vstack){
 
     EqStatement* relptr = dynamic_cast<EqStatement*>(box.node);
 
-    MemoryArena::Variable leftv = vstack.top(); vstack.pop();
-    const MemoryArena::Variable& rightv = vstack.top();
+    BotvinaMemory::Variable leftv = vstack.top(); vstack.pop();
+    const BotvinaMemory::Variable& rightv = vstack.top();
 
     if(leftv->vtype != VarType::INT || rightv->vtype != VarType::INT) {
       throw BotvinaRuntimeException("Equal operand must be an Integer");
@@ -508,8 +508,8 @@ void Evaluator::evaluateCircle(const EvalStack &stack, ValueStack &vstack) {
 
     Circle* relptr = dynamic_cast<Circle*>(box.node);
 
-    MemoryArena::Variable x = vstack.top(); vstack.pop();
-    MemoryArena::Variable y = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable x = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable y = vstack.top(); vstack.pop();
 
 //    if(x->type != VarType::INT || x->type != VarType::INT) {
 //      throw BotvinaRuntimeException("x operand must be an Integer");
@@ -530,8 +530,8 @@ void Evaluator::evaluateQuadrangle(const EvalStack &stack, ValueStack &vstack) {
 
     Quadrangle* relptr = dynamic_cast<Quadrangle*>(box.node);
 
-    MemoryArena::Variable x = vstack.top(); vstack.pop();
-    MemoryArena::Variable y = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable x = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable y = vstack.top(); vstack.pop();
 
 //    if(x->type != VarType::INT || x->type != VarType::INT) {
 //      throw BotvinaRuntimeException("x operand must be an Integer");
@@ -552,10 +552,10 @@ void Evaluator::evaluateLine(const EvalStack &stack, ValueStack &vstack) {
 
     Line* relptr = dynamic_cast<Line*>(box.node);
 
-    MemoryArena::Variable o_x = vstack.top(); vstack.pop();
-    MemoryArena::Variable o_y = vstack.top(); vstack.pop();
-    MemoryArena::Variable e_x = vstack.top(); vstack.pop();
-    MemoryArena::Variable e_y = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable o_x = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable o_y = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable e_x = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable e_y = vstack.top(); vstack.pop();
 
 //    if(x->type != VarType::INT || x->type != VarType::INT) {
 //      throw BotvinaRuntimeException("x operand must be an Integer");
@@ -576,8 +576,8 @@ void Evaluator::evaluatePoint(const EvalStack &stack, ValueStack &vstack) {
 
     Point* relptr = dynamic_cast<Point*>(box.node);
 
-    MemoryArena::Variable x = vstack.top(); vstack.pop();
-    MemoryArena::Variable y = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable x = vstack.top(); vstack.pop();
+    BotvinaMemory::Variable y = vstack.top(); vstack.pop();
 
 //    if(x->type != VarType::INT || x->type != VarType::INT) {
 //      throw BotvinaRuntimeException("x operand must be an Integer");
@@ -603,7 +603,7 @@ void Evaluator::evaluateIfStatement(EvalStack &stack, ValueStack &vstack) {
     IfStatement* ifptr = dynamic_cast<IfStatement*>(box.node);
 
     if(!box.blockEvaluated) {
-        MemoryArena::Variable condition = vstack.top(); vstack.pop();
+        BotvinaMemory::Variable condition = vstack.top(); vstack.pop();
         if(condition->i){
             std::for_each(ifptr->ops.rbegin(), ifptr->ops.rend(),
             [&stack](const NodeObject& nobj){ stack.emplace(nobj);});
@@ -629,7 +629,7 @@ void Evaluator::evaluateLoopStatement(EvalStack &stack, ValueStack &vstack) {
     LoopStatement* ifptr = dynamic_cast<LoopStatement*>(box.node);
 
     if(!box.blockEvaluated) {
-        MemoryArena::Variable condition = vstack.top(); vstack.pop();
+        BotvinaMemory::Variable condition = vstack.top(); vstack.pop();
         if(condition->i){
             std::for_each(ifptr->ops.rbegin(), ifptr->ops.rend(),
             [&stack](const NodeObject& nobj){ stack.emplace(nobj);});

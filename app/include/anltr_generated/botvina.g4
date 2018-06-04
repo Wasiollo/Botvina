@@ -1,10 +1,6 @@
 // Grammar for TKOM lessons - Botvina
 grammar botvina;
  
-input_text
-    : (statement)* EOF
-    ;
- 
 statement
     : (assign_statement | loop_statement | if_statement | function_literal | function_apply | draw | clear_statement | exit_statement)
     ;
@@ -241,7 +237,7 @@ WHEN_KEYWORD
     ;
  
 MUL_OPERATOR
-    : '*' | '/' | '%'
+    : '*' | '/'
     ;
  
 ADD_OPERATOR

@@ -36,7 +36,7 @@ struct Object {
 
 };
 
-class MemoryArena {
+class BotvinaMemory {
 public:
   using Variable = std::shared_ptr<Object>;
   using VarSpace = std::unordered_map<std::string, Variable>;

@@ -23,15 +23,15 @@ public:
   };
 
   enum {
-    RuleInput_text = 0, RuleStatement = 1, RuleAssign_statement = 2, RuleIf_statement = 3, 
-    RuleLoop_statement = 4, RuleFunction_literal = 5, RuleFunction_apply = 6, 
-    RuleClear_statement = 7, RuleExit_statement = 8, RuleReturn_statement = 9, 
-    RuleBlock = 10, RuleOperation_block = 11, RuleInteger = 12, RuleIdentifier = 13, 
-    RuleCondition = 14, RulePosition = 15, RuleAtom = 16, RulePredefined_figure = 17, 
-    RuleCircle = 18, RuleQuadrangle = 19, RulePoint = 20, RuleLine = 21, 
-    RuleDraw = 22, RuleSize = 23, RuleColor = 24, RuleExpr = 25, RuleAdd_expr = 26, 
-    RuleMul_expr = 27, RuleOr_expr = 28, RuleAnd_expr = 29, RuleEq_expr = 30, 
-    RuleRel_expr = 31, RuleParameter_list = 32, RuleIdentifier_list = 33
+    RuleStatement = 0, RuleAssign_statement = 1, RuleIf_statement = 2, RuleLoop_statement = 3, 
+    RuleFunction_literal = 4, RuleFunction_apply = 5, RuleClear_statement = 6, 
+    RuleExit_statement = 7, RuleReturn_statement = 8, RuleBlock = 9, RuleOperation_block = 10, 
+    RuleInteger = 11, RuleIdentifier = 12, RuleCondition = 13, RulePosition = 14, 
+    RuleAtom = 15, RulePredefined_figure = 16, RuleCircle = 17, RuleQuadrangle = 18, 
+    RulePoint = 19, RuleLine = 20, RuleDraw = 21, RuleSize = 22, RuleColor = 23, 
+    RuleExpr = 24, RuleAdd_expr = 25, RuleMul_expr = 26, RuleOr_expr = 27, 
+    RuleAnd_expr = 28, RuleEq_expr = 29, RuleRel_expr = 30, RuleParameter_list = 31, 
+    RuleIdentifier_list = 32
   };
 
   botvinaParser(antlr4::TokenStream *input);
@@ -44,7 +44,6 @@ public:
   virtual antlr4::dfa::Vocabulary& getVocabulary() const override;
 
 
-  class Input_textContext;
   class StatementContext;
   class Assign_statementContext;
   class If_statementContext;
@@ -78,21 +77,6 @@ public:
   class Rel_exprContext;
   class Parameter_listContext;
   class Identifier_listContext; 
-
-  class  Input_textContext : public antlr4::ParserRuleContext {
-  public:
-    Input_textContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EOF();
-    std::vector<StatementContext *> statement();
-    StatementContext* statement(size_t i);
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-   
-  };
-
-  Input_textContext* input_text();
 
   class  StatementContext : public antlr4::ParserRuleContext {
   public:

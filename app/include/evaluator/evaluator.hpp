@@ -2,7 +2,7 @@
 #define EVALUATOR_HPP
 #include "ast/ast_header.hpp"
 #include <stack>
-#include "memoryarena.hpp"
+#include "botvinamemory.hpp"
 #include "drawwindow.hpp"
 
 
@@ -26,7 +26,7 @@ struct AstEvalBox {
 class Evaluator {
 public:
   using EvalStack = std::stack<AstEvalBox>;
-  using ValueStack = std::stack<MemoryArena::Variable>;
+  using ValueStack = std::stack<BotvinaMemory::Variable>;
 
 public:
   Object eval(const ast::Ast& tree);
@@ -51,7 +51,7 @@ private:
   void evaluateIfStatement(EvalStack& stack, ValueStack& vstack);
   void evaluateLoopStatement(EvalStack& stack, ValueStack& vstack);
 private:
-  MemoryArena arena_;
+  BotvinaMemory arena_;
   DrawWindow* drawWindow;
 
 };

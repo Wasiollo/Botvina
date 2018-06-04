@@ -14,9 +14,6 @@
 class  botvinaListener : public antlr4::tree::ParseTreeListener {
 public:
 
-  virtual void enterInput_text(botvinaParser::Input_textContext *ctx) = 0;
-  virtual void exitInput_text(botvinaParser::Input_textContext *ctx) = 0;
-
   virtual void enterStatement(botvinaParser::StatementContext *ctx) = 0;
   virtual void exitStatement(botvinaParser::StatementContext *ctx) = 0;
 
