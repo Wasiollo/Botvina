@@ -78,7 +78,10 @@ HEADERS += \
     include/botvinaruntimeexception.hpp \
     include/drawwindow.hpp \
     include/evaluator/evaluator.hpp \
-    include/evaluator/memoryarena.hpp
+    include/evaluator/memoryarena.hpp \
+    include/ast/ast_header.hpp \
+    include/ast/atom/atom_header.hpp \
+    include/figure/figure_header.hpp
 
 
 FORMS += \

@@ -4,8 +4,9 @@
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QtDesigner/customwidget.h>
-#include "figure/figure.hpp"
 #include <memory>
+
+#include "figure/figure.hpp"
 
 class DrawWindow : public QWidget{
 Q_OBJECT

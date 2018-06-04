@@ -1,0 +1,8 @@
+if ( 1>0) { draw line black (60, 20) (60, 80);draw line black (60, 80) (40, 80) ; draw line black (40, 80) (40, 90) ; draw line black (40, 90) (90, 90) ; draw line black (90, 90) (90, 80) ; draw line black (90, 80) (70, 80) ; draw line black (70, 80) (70, 20) ; draw line black (70, 20) (60, 20) ;}
+
+
+x=5;
+when ( x>0) { draw line black (60*x, 20*x) (60*x, 80*x);draw line black (60*x, 80*x) (40*x, 80*x) ; draw line black (40*x, 80*x) (40*x, 90*x) ; draw line black (40*x, 90*x) (90*x, 90*x) ; draw line black (90*x, 90*x) (90*x, 80*x) ; draw line black (90*x, 80*x) (70*x, 80*x) ; draw line black (70*x, 80*x) (70*x, 20*x) ; draw line black (70*x, 20*x) (60*x, 20*x); x = x - 1;}
+
+
+x=5;
