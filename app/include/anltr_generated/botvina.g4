@@ -1,4 +1,3 @@
-// Grammar for TKOM lessons - Botvina
 grammar botvina;
  
 statement

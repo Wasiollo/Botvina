@@ -16,9 +16,9 @@ with C++ target. Created in 18L semester.
 * Qt
 * antlr4 runtime (inside this project)
 * catch2 Unit Test Framework (included in this code)
-
+* Qt Cretor (not need, but easy to use)
 ## Building
-Type `qmake` to build app;
+Type `qmake -makefile` and then `make` to build app;
 
 ## Executing
 

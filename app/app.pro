@@ -35,13 +35,13 @@ SOURCES += src/main.cpp \
     src/evaluator/evaluator.cpp \
     src/figure/linefigure.cpp \
     src/mainwindow.cpp \
-    src/evaluator/memoryarena.cpp \
     src/figure/pointfigure.cpp \
     src/figure/quadranglefigure.cpp \
     include/anltr_generated/botvinaBaseListener.cpp \
     include/anltr_generated/botvinaLexer.cpp \
     include/anltr_generated/botvinaListener.cpp \
-    include/anltr_generated/botvinaParser.cpp
+    include/anltr_generated/botvinaParser.cpp \
+    src/evaluator/botivnamemory.cpp
 
 HEADERS += \
         include/mainwindow.h \

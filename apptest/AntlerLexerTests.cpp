@@ -1,7 +1,7 @@
-#include "catch.hpp"
 #include "antlr4-runtime.h"
-#include "include/anltr_generated/botvinaLexer.h"
-#include "include/anltr_generated/botvinaParser.h"
+#include "catch.hpp"
+#include "anltr_generated/botvinaLexer.h"
+#include "anltr_generated/botvinaParser.h"
 
 #include <sstream>
 
@@ -10,7 +10,7 @@ using namespace antlr4;
 TEST_CASE( "ANTLER LEXER TESTS" ) {
 
   SECTION( "identifiers" ) {
-    ANTLRInputStream input("ala ma1 kota_ _ _a _1kot _ma_ _1_ 1ale");
+    ANTLRInputStream input("ala ma1 kota_ _ _a _kot_ ma 1ale");
     botvinaLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
 
@@ -38,23 +38,21 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
 
     token = tokens.get(5);
     REQUIRE( token->getType() == lexer.IDENTIFIER );
-    REQUIRE( token->getText() == "_1kot" );
+    REQUIRE( token->getText() == "_kot_" );
 
     token = tokens.get(6);
     REQUIRE( token->getType() == lexer.IDENTIFIER );
-    REQUIRE( token->getText() == "_ma_" );
+    REQUIRE( token->getText() == "ma" );
 
     token = tokens.get(7);
-    REQUIRE( token->getType() == lexer.IDENTIFIER );
-    REQUIRE( token->getText() == "_1_" );
-
-    token = tokens.get(8);
-    REQUIRE( token->getType() == lexer.INTEGER);
+    REQUIRE( token->getType() == lexer.INTEGER );
     REQUIRE( token->getText() == "1" );
 
-    token = tokens.get(9);
+    token = tokens.get(8);
     REQUIRE( token->getType() == lexer.IDENTIFIER );
     REQUIRE( token->getText() == "ale" );
+
+
   }
 
   SECTION( "Integers" ) {
@@ -118,12 +116,6 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
       REQUIRE( token->getText() == "draw" );
     }
 
-    SECTION( "move" ) {
-
-      auto token = tokens.get(2);
-      REQUIRE( token->getType() == lexer.MOVE_KEYWORD );
-      REQUIRE( token->getText() == "move" );
-    }
 
     SECTION( "if" ) {
 
@@ -162,7 +154,7 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
   }
 
   SECTION( "MATHEMATICA OPERATIONS" ) {
-      ANTLRInputStream input("> >= < <= && || = == != + - * / %");
+      ANTLRInputStream input("> >= < <= && || = == != + - * /");
       botvinaLexer lexer(&input);
       CommonTokenStream tokens(&lexer);
 
@@ -258,12 +250,6 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
       REQUIRE( token->getText() == "/" );
     }
 
-    SECTION( "modulo" ) {
-
-      auto token = tokens.get(13);
-      REQUIRE( token->getType() == lexer.MUL_OPERATOR );
-      REQUIRE( token->getText() == "%" );
-    }
   }
 
   SECTION( "other" ) {

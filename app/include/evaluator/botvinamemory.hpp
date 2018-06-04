@@ -48,7 +48,7 @@ public:
   void put(const std::string& varname, const Variable& var);
 
 private:
-  VarSpace global_;
+  VarSpace global;
 };
 
 #endif // MEMORYARENA_H
