@@ -6,15 +6,15 @@
 #include "drawwindow.hpp"
 
 
-struct AstEvalBox {
+struct AstEvaluationStucture {
 
   ast::NodeObject::Type type;
   ast::Node* node;
   const std::shared_ptr<ast::Node>* funcptr;
-  bool evaluateNow; //
+  bool evaluateNow;
   bool blockEvaluated; //for if and loop statements
 
-  AstEvalBox(const ast::NodeObject& nobject)
+  AstEvaluationStucture(const ast::NodeObject& nobject)
     : type(nobject.type),
       node(nobject.object.get()),
       funcptr(nullptr),
@@ -24,7 +24,7 @@ struct AstEvalBox {
 
 class Evaluator {
 public:
-  using EvalStack = std::stack<AstEvalBox>;
+  using EvalStack = std::stack<AstEvaluationStucture>;
   using ValueStack = std::stack<BotvinaMemory::Variable>;
 
 public:

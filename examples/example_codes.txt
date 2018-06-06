@@ -40,3 +40,7 @@ draw circle 60 blue (105+120*x, 130);
 draw circle 60 blue (85+120*x, 115);
 draw circle 70 green (100+120*x, 95);
 x = x - 1;}}
+
+
+x = 16;
+when ( x > 0 ) {draw line red (x*20, 40) (80, 150); x = x - 1;}

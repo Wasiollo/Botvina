@@ -40,6 +40,7 @@ Ast stringToAst(std::string statement){
     BotvinaRealListener botvina_real_listener ;
     tree::ParseTreeWalker::DEFAULT.walk(&botvina_real_listener, tree);
     Ast ast = botvina_real_listener.getAst();
+    //std::cout<<ast.toString()<<std::endl;
     return ast;
 }
 

@@ -16,7 +16,7 @@ Object Evaluator::eval(const Ast& tree) {
   ValueStack vstack;
 
   while(!stack.empty()) {
-    AstEvalBox& box = stack.top();
+    AstEvaluationStucture& box = stack.top();
 
     if(box.evaluateNow) {
       switch(box.type) {
@@ -257,7 +257,7 @@ Object Evaluator::eval(const Ast& tree) {
 
       case NodeObject::CLEAR:
         {
-          const AstEvalBox& box = stack.top(); stack.pop();
+          const AstEvaluationStucture& box = stack.top(); stack.pop();
             drawWindow->getDrawVector().clear();
             drawWindow->update();
             vstack.emplace(new Object());
@@ -291,7 +291,7 @@ Object Evaluator::eval(const Ast& tree) {
 }
 
 void Evaluator::evaluateAssign(const EvalStack& stack, ValueStack& vstack) {
-  const AstEvalBox& box = stack.top();
+  const AstEvaluationStucture& box = stack.top();
 
   AssignStatement* assignptr = dynamic_cast<AssignStatement*>(box.node);
 
@@ -308,7 +308,7 @@ void Evaluator::evaluateAssign(const EvalStack& stack, ValueStack& vstack) {
 }
 
 void Evaluator::evaluateOr(const EvalStack& stack, ValueStack& vstack) {
-  const AstEvalBox& box = stack.top();
+  const AstEvaluationStucture& box = stack.top();
 
   OrStatement* orptr = dynamic_cast<OrStatement*>(box.node);
 
@@ -337,7 +337,7 @@ void Evaluator::evaluateOr(const EvalStack& stack, ValueStack& vstack) {
 }
 
 void Evaluator::evaluateAnd(const EvalStack& stack, ValueStack& vstack) {
-  const AstEvalBox& box = stack.top();
+  const AstEvaluationStucture& box = stack.top();
 
   AndStatement* andptr = dynamic_cast<AndStatement*>(box.node);
 
@@ -366,7 +366,7 @@ void Evaluator::evaluateAnd(const EvalStack& stack, ValueStack& vstack) {
 }
 
 void Evaluator::evaluateRel(const EvalStack& stack, ValueStack& vstack) {
-  const AstEvalBox& box = stack.top();
+  const AstEvaluationStucture& box = stack.top();
 
   RelStatement* relptr = dynamic_cast<RelStatement*>(box.node);
 
@@ -405,7 +405,7 @@ void Evaluator::evaluateRel(const EvalStack& stack, ValueStack& vstack) {
 // Evaluate specific methods
 
 void Evaluator::evaluateAdd(const EvalStack& stack, ValueStack& vstack) {
-  const AstEvalBox& box = stack.top();
+  const AstEvaluationStucture& box = stack.top();
 
   AddStatement* addptr = dynamic_cast<AddStatement*>(box.node);
 
@@ -435,7 +435,7 @@ void Evaluator::evaluateAdd(const EvalStack& stack, ValueStack& vstack) {
 }
 
 void Evaluator::evaluateMul(const EvalStack& stack, ValueStack& vstack) {
-  const AstEvalBox& box = stack.top();
+  const AstEvaluationStucture& box = stack.top();
 
   MulStatement* mulptr = dynamic_cast<MulStatement*>(box.node);
 
@@ -464,7 +464,7 @@ void Evaluator::evaluateMul(const EvalStack& stack, ValueStack& vstack) {
 }
 
 void Evaluator::evaluateId(const EvalStack& stack, ValueStack& vstack) {
-  const AstEvalBox& box = stack.top();
+  const AstEvaluationStucture& box = stack.top();
 
   Identifier* idptr = dynamic_cast<Identifier*>(box.node);
   const std::string& vname = idptr->str;
@@ -477,7 +477,7 @@ void Evaluator::evaluateId(const EvalStack& stack, ValueStack& vstack) {
 }
 
 void Evaluator::evaluateEq(const EvalStack &stack, ValueStack &vstack){
-    const AstEvalBox& box = stack.top();
+    const AstEvaluationStucture& box = stack.top();
 
     EqStatement* relptr = dynamic_cast<EqStatement*>(box.node);
 
@@ -518,7 +518,7 @@ Qt::GlobalColor colorToGlobalColor(Color color){
 
 void Evaluator::evaluateCircle(const EvalStack &stack, ValueStack &vstack) {
 
-    const AstEvalBox& box = stack.top();
+    const AstEvaluationStucture& box = stack.top();
 
     Circle* relptr = dynamic_cast<Circle*>(box.node);
 
@@ -535,7 +535,7 @@ void Evaluator::evaluateCircle(const EvalStack &stack, ValueStack &vstack) {
 }
 
 void Evaluator::evaluateQuadrangle(const EvalStack &stack, ValueStack &vstack) {
-    const AstEvalBox& box = stack.top();
+    const AstEvaluationStucture& box = stack.top();
 
     Quadrangle* relptr = dynamic_cast<Quadrangle*>(box.node);
 
@@ -553,7 +553,7 @@ void Evaluator::evaluateQuadrangle(const EvalStack &stack, ValueStack &vstack) {
 }
 
 void Evaluator::evaluateLine(const EvalStack &stack, ValueStack &vstack) {
-    const AstEvalBox& box = stack.top();
+    const AstEvaluationStucture& box = stack.top();
 
     Line* relptr = dynamic_cast<Line*>(box.node);
 
@@ -572,7 +572,7 @@ void Evaluator::evaluateLine(const EvalStack &stack, ValueStack &vstack) {
 }
 
 void Evaluator::evaluatePoint(const EvalStack &stack, ValueStack &vstack) {
-    const AstEvalBox& box = stack.top();
+    const AstEvaluationStucture& box = stack.top();
 
     Point* relptr = dynamic_cast<Point*>(box.node);
 
@@ -589,7 +589,7 @@ void Evaluator::evaluatePoint(const EvalStack &stack, ValueStack &vstack) {
 }
 
 void Evaluator::evaluateIfStatement(EvalStack &stack, ValueStack &vstack) {
-    AstEvalBox& box = stack.top();
+    AstEvaluationStucture& box = stack.top();
 
     IfStatement* ifptr = dynamic_cast<IfStatement*>(box.node);
 
@@ -615,7 +615,7 @@ void Evaluator::evaluateIfStatement(EvalStack &stack, ValueStack &vstack) {
 }
 
 void Evaluator::evaluateLoopStatement(EvalStack &stack, ValueStack &vstack) {
-    AstEvalBox& box = stack.top();
+    AstEvaluationStucture& box = stack.top();
 
     LoopStatement* ifptr = dynamic_cast<LoopStatement*>(box.node);
 

@@ -9,7 +9,7 @@ using namespace antlr4;
 
 TEST_CASE( "ANTLER PARSER TESTS" ) {
 
-  SECTION( "integers" ) {
+  SECTION( "INTEGERS" ) {
     ANTLRInputStream input("1 134 -3 -125 0");
     botvinaLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
@@ -39,7 +39,6 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
     REQUIRE( tree->toStringTree(&parser) == "(integer 0)");
 
   }
-
 
 
   SECTION( "POSITION" ) {
@@ -149,7 +148,7 @@ TEST_CASE( "ANTLER PARSER TESTS" ) {
       REQUIRE( tree->toStringTree(&parser) == "(exit_statement exit ;)");
   }
 
-  SECTION( "DRAW KEYWORD"){
+  SECTION( "DRAW FIGURE"){
       ANTLRInputStream input("draw line red (60, 20) (60, 80) ;");
       botvinaLexer lexer(&input);
       CommonTokenStream tokens(&lexer);
