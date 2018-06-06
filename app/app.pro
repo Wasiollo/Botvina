@@ -75,7 +75,6 @@ HEADERS += \
     include/figure/pointfigure.hpp \
     include/figure/quadranglefigure.hpp \
     include/botvinareallistener.hpp \
-    include/botvinaruntimeexception.hpp \
     include/drawwindow.hpp \
     include/evaluator/evaluator.hpp \
     include/ast/ast_header.hpp \

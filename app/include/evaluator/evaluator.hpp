@@ -7,13 +7,12 @@
 
 
 struct AstEvalBox {
-  using FuncPtr = std::shared_ptr<ast::Node>*;
 
   ast::NodeObject::Type type;
   ast::Node* node;
   const std::shared_ptr<ast::Node>* funcptr;
-  bool evaluateNow;
-  bool blockEvaluated;
+  bool evaluateNow; //
+  bool blockEvaluated; //for if and loop statements
 
   AstEvalBox(const ast::NodeObject& nobject)
     : type(nobject.type),
@@ -48,10 +47,11 @@ private:
   void evaluateLine(const EvalStack& stack, ValueStack& vstack);
   void evaluatePoint(const EvalStack& stack, ValueStack& vstack);
   void evaluateFunctionApply(const EvalStack& stack, ValueStack& vstack);
+  void evaluateFunctionLiteral(const EvalStack& stack, ValueStack& vstack);
   void evaluateIfStatement(EvalStack& stack, ValueStack& vstack);
   void evaluateLoopStatement(EvalStack& stack, ValueStack& vstack);
 private:
-  BotvinaMemory arena_;
+  BotvinaMemory botvinaMemory;
   DrawWindow* drawWindow;
 
 };

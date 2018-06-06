@@ -1,10 +1,14 @@
 #include "evaluator/evaluator.hpp"
 #include "ast/ast_header.hpp"
-#include "botvinaruntimeexception.hpp"
 #include "figure/figure_header.hpp"
 #include <QCoreApplication>
+#include <Exceptions.h>
 
 using namespace ast;
+
+
+Evaluator::Evaluator(DrawWindow* drawWindow): drawWindow(drawWindow) {
+}
 
 Object Evaluator::eval(const Ast& tree) {
 
@@ -16,6 +20,22 @@ Object Evaluator::eval(const Ast& tree) {
 
     if(box.evaluateNow) {
       switch(box.type) {
+
+      case NodeObject::ADD:
+        evaluateAdd(stack, vstack);
+        stack.pop();
+        break;
+
+      case NodeObject::MUL:
+        evaluateMul(stack, vstack);
+        stack.pop();
+        break;
+
+      case NodeObject::AND:
+        evaluateAnd(stack, vstack);
+        stack.pop();
+        break;
+
       case NodeObject::ASSIGN:
         evaluateAssign(stack, vstack);
         stack.pop();
@@ -26,11 +46,6 @@ Object Evaluator::eval(const Ast& tree) {
         stack.pop();
         break;
 
-      case NodeObject::AND:
-        evaluateAnd(stack, vstack);
-        stack.pop();
-        break;
-
       case NodeObject::EQ:
         evaluateEq(stack, vstack);
         stack.pop();
@@ -38,16 +53,6 @@ Object Evaluator::eval(const Ast& tree) {
 
       case NodeObject::REL:
         evaluateRel(stack, vstack);
-        stack.pop();
-        break;
-
-      case NodeObject::ADD:
-        evaluateAdd(stack, vstack);
-        stack.pop();
-        break;
-
-      case NodeObject::MUL:
-        evaluateMul(stack, vstack);
         stack.pop();
         break;
 
@@ -71,11 +76,6 @@ Object Evaluator::eval(const Ast& tree) {
         stack.pop();
         break;
 
-      case NodeObject::FUNCTION_APPLY:
-        evaluateFunctionApply(stack,vstack);
-        stack.pop();
-        break;
-
       case NodeObject::IF_STATEMENT:
         evaluateIfStatement(stack,vstack);
         break;
@@ -83,6 +83,16 @@ Object Evaluator::eval(const Ast& tree) {
       case NodeObject::LOOP_STATEMENT:
         evaluateLoopStatement(stack,vstack);
         break;
+
+      case NodeObject::FUNCTION_APPLY:
+          evaluateFunctionApply(stack,vstack);
+          stack.pop();
+          break;
+
+      case NodeObject::FUNCTION_LITERAL:
+          evaluateFunctionLiteral(stack, vstack);
+          stack.pop();
+          break;
 
       default:
         break;
@@ -182,41 +192,41 @@ Object Evaluator::eval(const Ast& tree) {
         break;
 
       case NodeObject::IF_STATEMENT:
-       {
+        {
           IfStatement* ptr = dynamic_cast<IfStatement*>(box.node);
           stack.emplace(ptr->condition);
           box.evaluateNow=true;
-      }
-      break;//TODO ZROBIĆ
+        }
+        break;
 
-        case NodeObject::LOOP_STATEMENT:
+      case NodeObject::LOOP_STATEMENT:
         {
             LoopStatement* ptr = dynamic_cast<LoopStatement*>(box.node);
             stack.emplace(ptr->condition);
             box.evaluateNow=true;
         }
-          break;//TODO ZROBIĆ
+        break;
 
 
-         case NodeObject::CIRCLE:
+      case NodeObject::CIRCLE:
         {
             Circle* ptr = dynamic_cast<Circle*>(box.node);
             stack.emplace(ptr->x);
             stack.emplace(ptr->y);
             box.evaluateNow = true;
         }
-          break;//TODO ZROBIĆ
+        break;
 
-         case NodeObject::QUADRANGLE:
+      case NodeObject::QUADRANGLE:
         {
             Quadrangle* ptr = dynamic_cast<Quadrangle*>(box.node);
             stack.emplace(ptr->x);
             stack.emplace(ptr->y);
             box.evaluateNow = true;
         }
-          break;//TODO ZROBIĆ
+        break;
 
-        case NodeObject::LINE:
+      case NodeObject::LINE:
         {
             Line* ptr = dynamic_cast<Line*>(box.node);
             stack.emplace(ptr->origin_x);
@@ -226,41 +236,48 @@ Object Evaluator::eval(const Ast& tree) {
 
             box.evaluateNow = true;
         }
-          break;//TODO ZROBIĆ
+        break;
 
-        case NodeObject::POINT:
+      case NodeObject::POINT:
         {
             Point* ptr = dynamic_cast<Point*>(box.node);
             stack.emplace(ptr->x);
             stack.emplace(ptr->y);
             box.evaluateNow = true;
         }
-          break; //TODO ZROBIĆ
+          break;
 
-        case NodeObject::EXIT:
+      case NodeObject::EXIT:
         {
-            exit(0);
+          while(!stack.empty())
+              stack.pop();
+          exit(0);
         }
         break;
 
-        case NodeObject::CLEAR:
+      case NodeObject::CLEAR:
         {
           const AstEvalBox& box = stack.top(); stack.pop();
             drawWindow->getDrawVector().clear();
             drawWindow->update();
-            std::cout <<"CLEARED"<<std::endl;
             vstack.emplace(new Object());
-        } break;//TODO ZROBIĆ
+        }
+        break;
 
 
       case NodeObject::FUNCTION_APPLY:
         {
-          FunctionApply* ptr = dynamic_cast<FunctionApply*>(box.node);
-
-          for(auto& nobj : ptr->exprs)
-            stack.emplace(nobj);
-
+          std::cout<<"FUNCTION_APPLY NOT IMPLEMENTED" <<std::endl;
           box.evaluateNow = true;
+          vstack.emplace(new Object()); //VOID BECOUSE OF LACK OF IMPLEMENTATION
+        }
+        break;
+
+      case NodeObject::FUNCTION_LITERAL:
+        {
+          std::cout<<"FUNCTION_LITERAL NOT IMPLEMENTED" <<std::endl;
+          box.evaluateNow = true;
+          vstack.emplace(new Object()); //VOID BECOUSE OF LACK OF IMPLEMENTATION
         }
         break;
 
@@ -282,11 +299,11 @@ void Evaluator::evaluateAssign(const EvalStack& stack, ValueStack& vstack) {
 
   const std::string& vname = assignptr->id;
 
-  if(arena_.isDefined(vname)) {
-    arena_.at(vname) = rval;
+  if(botvinaMemory.contains(vname)) {
+    botvinaMemory.at(vname) = rval;
   }
   else {
-    arena_.put(vname, rval);
+    botvinaMemory.insert(vname, rval);
   }
 }
 
@@ -302,8 +319,8 @@ void Evaluator::evaluateOr(const EvalStack& stack, ValueStack& vstack) {
   for(; i<noperands; ++i) {
     const BotvinaMemory::Variable& var = vstack.top();
 
-    if(var->vtype != VarType::INT) {
-      throw BotvinaRuntimeException("Logical or operand must be a INT");
+    if(var->variableType != VariableType::INT) {
+      throw std::runtime_error("Logical or operand must be a INT");
     }
 
     result = result || var->i;
@@ -331,8 +348,8 @@ void Evaluator::evaluateAnd(const EvalStack& stack, ValueStack& vstack) {
   for(; i<noperands; ++i) {
     const BotvinaMemory::Variable& var = vstack.top();
 
-    if(var->vtype != VarType::INT) {
-      throw BotvinaRuntimeException("Logical and operand must be a INT");
+    if(var->variableType != VariableType::INT) {
+      throw std::runtime_error("Logical and operand must be a INT");
     }
 
     result = result && var->i;
@@ -353,30 +370,30 @@ void Evaluator::evaluateRel(const EvalStack& stack, ValueStack& vstack) {
 
   RelStatement* relptr = dynamic_cast<RelStatement*>(box.node);
 
-  BotvinaMemory::Variable leftv = vstack.top(); vstack.pop();
-  const BotvinaMemory::Variable& rightv = vstack.top();
+  BotvinaMemory::Variable leftValue = vstack.top(); vstack.pop();
+  const BotvinaMemory::Variable& rightValue = vstack.top();
 
-  if(leftv->vtype != VarType::INT || rightv->vtype != VarType::INT) {
-    throw BotvinaRuntimeException("Relation operand must be an Integer");
+  if(leftValue->variableType != VariableType::INT || rightValue->variableType != VariableType::INT) {
+    throw std::runtime_error("Relation operand must be an Integer");
   }
 
   bool result;
 
   switch(relptr->type) {
   case RelStatement::LT:
-    result = leftv->i < rightv->i;
+    result = leftValue->i < rightValue->i;
     break;
 
   case RelStatement::LE:
-    result = leftv->i <= rightv->i;
+    result = leftValue->i <= rightValue->i;
     break;
 
   case RelStatement::GT:
-    result = leftv->i > rightv->i;
+    result = leftValue->i > rightValue->i;
     break;
 
   case RelStatement::GE:
-    result = leftv->i >= rightv->i;
+    result = leftValue->i >= rightValue->i;
     break;
   }
 
@@ -384,6 +401,8 @@ void Evaluator::evaluateRel(const EvalStack& stack, ValueStack& vstack) {
 
   vstack.emplace(new Object(result));
 }
+
+// Evaluate specific methods
 
 void Evaluator::evaluateAdd(const EvalStack& stack, ValueStack& vstack) {
   const AstEvalBox& box = stack.top();
@@ -395,8 +414,8 @@ void Evaluator::evaluateAdd(const EvalStack& stack, ValueStack& vstack) {
   for(auto op : addptr->addOps) {
     const BotvinaMemory::Variable& var = vstack.top();
 
-    if(var->vtype != VarType::INT) {
-        throw BotvinaRuntimeException("");
+    if(var->variableType != VariableType::INT) {
+        throw std::runtime_error("Addition operand must be an Integer");
     }
 
     switch(op) {
@@ -425,8 +444,8 @@ void Evaluator::evaluateMul(const EvalStack& stack, ValueStack& vstack) {
   for(auto op : mulptr->mulOps) {
     const BotvinaMemory::Variable& var = vstack.top();
 
-    if(var->vtype != VarType::INT)
-      throw BotvinaRuntimeException("Multiplication operand must be an Integer");
+    if(var->variableType != VariableType::INT)
+      throw std::runtime_error("Multiplication operand must be an Integer");
 
     switch(op) {
     case MulType::MUL:
@@ -450,16 +469,11 @@ void Evaluator::evaluateId(const EvalStack& stack, ValueStack& vstack) {
   Identifier* idptr = dynamic_cast<Identifier*>(box.node);
   const std::string& vname = idptr->str;
 
-  if(arena_.isDefined(vname)) {
-    vstack.push(arena_.at(vname));
+  if(botvinaMemory.contains(vname)) {
+    vstack.push(botvinaMemory.at(vname));
   }
-  else {
-    std::string msg("Variable identifier \"");
-    msg += vname;
-    msg += "\" is not defined in current scope";
-
-    throw BotvinaRuntimeException(msg);
-  }
+  else
+    throw std::runtime_error("\'" + vname + "\' variable is not defined" );
 }
 
 void Evaluator::evaluateEq(const EvalStack &stack, ValueStack &vstack){
@@ -470,8 +484,8 @@ void Evaluator::evaluateEq(const EvalStack &stack, ValueStack &vstack){
     BotvinaMemory::Variable leftv = vstack.top(); vstack.pop();
     const BotvinaMemory::Variable& rightv = vstack.top();
 
-    if(leftv->vtype != VarType::INT || rightv->vtype != VarType::INT) {
-      throw BotvinaRuntimeException("Equal operand must be an Integer");
+    if(leftv->variableType != VariableType::INT || rightv->variableType != VariableType::INT) {
+      throw std::runtime_error("Equal operand must be an Integer");
     }
 
     int result;
@@ -511,14 +525,9 @@ void Evaluator::evaluateCircle(const EvalStack &stack, ValueStack &vstack) {
     BotvinaMemory::Variable x = vstack.top(); vstack.pop();
     BotvinaMemory::Variable y = vstack.top(); vstack.pop();
 
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
-
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
-
+    if(x->variableType != VariableType::INT || y->variableType != VariableType::INT ) {
+      throw std::runtime_error("Position variable must be an Integer");
+    }
 
     drawWindow->getDrawVector().emplace_back(new CircleFigure(x->i,y->i,relptr->size, colorToGlobalColor(relptr->color)));
     drawWindow->update();
@@ -533,13 +542,9 @@ void Evaluator::evaluateQuadrangle(const EvalStack &stack, ValueStack &vstack) {
     BotvinaMemory::Variable x = vstack.top(); vstack.pop();
     BotvinaMemory::Variable y = vstack.top(); vstack.pop();
 
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
-
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
+    if(x->variableType != VariableType::INT || y->variableType != VariableType::INT ) {
+      throw std::runtime_error("Position variable must be an Integer");
+    }
 
 
     drawWindow->getDrawVector().emplace_back(new QuadrangleFigure(x->i,y->i,relptr->size, colorToGlobalColor(relptr->color)));
@@ -557,14 +562,9 @@ void Evaluator::evaluateLine(const EvalStack &stack, ValueStack &vstack) {
     BotvinaMemory::Variable e_x = vstack.top(); vstack.pop();
     BotvinaMemory::Variable e_y = vstack.top(); vstack.pop();
 
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
-
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
-
+    if(o_x->variableType != VariableType::INT || o_y->variableType != VariableType::INT || e_x->variableType != VariableType::INT || e_y->variableType != VariableType::INT ) {
+      throw std::runtime_error("Position variable must be an Integer");
+    }
 
     drawWindow->getDrawVector().emplace_back(new LineFigure(o_x->i,o_y->i, e_x->i,e_y->i, colorToGlobalColor(relptr->color)));
     drawWindow->update();
@@ -579,22 +579,13 @@ void Evaluator::evaluatePoint(const EvalStack &stack, ValueStack &vstack) {
     BotvinaMemory::Variable x = vstack.top(); vstack.pop();
     BotvinaMemory::Variable y = vstack.top(); vstack.pop();
 
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
-
-//    if(x->type != VarType::INT || x->type != VarType::INT) {
-//      throw BotvinaRuntimeException("x operand must be an Integer");
-//    }
-
+    if(x->variableType != VariableType::INT || y->variableType != VariableType::INT ) {
+      throw std::runtime_error("Position variable must be an Integer");
+    }
 
     drawWindow->getDrawVector().emplace_back(new PointFigure(x->i,y->i, colorToGlobalColor(relptr->color)));
     drawWindow->update();
     vstack.emplace(new Object());
-}
-
-void Evaluator::evaluateFunctionApply(const EvalStack &stack, ValueStack &vstack) {
-    //TODO
 }
 
 void Evaluator::evaluateIfStatement(EvalStack &stack, ValueStack &vstack) {
@@ -649,8 +640,14 @@ void Evaluator::evaluateLoopStatement(EvalStack &stack, ValueStack &vstack) {
     }
 }
 
-
-
-Evaluator::Evaluator(DrawWindow* drawWindow): drawWindow(drawWindow) {
+void Evaluator::evaluateFunctionApply(const EvalStack &stack, ValueStack &vstack) {
+    std::cout<<"NOT IMPLEMENTED"<<std::endl;
 }
+
+void Evaluator::evaluateFunctionLiteral(const EvalStack &stack, ValueStack &vstack) {
+    std::cout<<"NOT IMPLEMENTED"<<std::endl;
+}
+
+
+
 

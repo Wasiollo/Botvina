@@ -7,9 +7,9 @@
 
 using namespace antlr4;
 
-TEST_CASE( "ANTLER LEXER TESTS" ) {
+TEST_CASE( "ANTLER LEXER IDENTIFIERS" ) {
 
-  SECTION( "identifiers" ) {
+  SECTION( "IDENTIFIERS" ) {
     ANTLRInputStream input("ala ma1 kota_ _ _a _kot_ ma 1ale");
     botvinaLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
@@ -54,7 +54,9 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
 
 
   }
+}
 
+TEST_CASE( "ANTLER LEXER INTEGERS" ) {
   SECTION( "Integers" ) {
     SECTION( "positive" ) {
     ANTLRInputStream input("123456");
@@ -93,8 +95,8 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
       REQUIRE( token->getText() == "0" );
     }
   }
-
-  SECTION( "FUNCTIONS AND BOOLEAN" ) {
+}
+TEST_CASE( "ANTLER LEXER FUNCTIONS AND BOOLEANS" ) {
     ANTLRInputStream input("func draw move if when clear exit return True False");
     botvinaLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
@@ -152,8 +154,7 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
       REQUIRE( token->getText() == "return" );
     }
   }
-
-  SECTION( "MATHEMATICA OPERATIONS" ) {
+TEST_CASE("MATHEMATICA OPERATIONS"){
       ANTLRInputStream input("> >= < <= && || = == != + - * /");
       botvinaLexer lexer(&input);
       CommonTokenStream tokens(&lexer);
@@ -252,7 +253,7 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
 
   }
 
-  SECTION( "other" ) {
+  TEST_CASE("others") {
   ANTLRInputStream input("{}(),;");
   botvinaLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
@@ -295,7 +296,7 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
     }
   }
 
-  SECTION( "geometric primitives" ){
+  TEST_CASE( "GEOMETRIC PRIMITIVES" ){
   ANTLRInputStream input("circle quadrangle line point");
   botvinaLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
@@ -330,7 +331,7 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
       }
   }
 
-  SECTION( "colors" ){
+  TEST_CASE( "COLORS" ){
   ANTLRInputStream input("black red blue green");
   botvinaLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
@@ -365,7 +366,6 @@ TEST_CASE( "ANTLER LEXER TESTS" ) {
       }
   }
 
-}
 
 
 TEST_CASE( "TRACKING POSITION ANTLER" ) {

@@ -42,9 +42,9 @@ SOURCES +=  \
     tst_apptests.cpp \
     main.cpp\
     $$PROJECT_SOURCES \
-    AntlerLexerTests.cpp \
     passertests.cpp \
-    asttests.cpp
+    asttests.cpp \
+    lexer_tests.cpp
 
 
 HEADERS += \

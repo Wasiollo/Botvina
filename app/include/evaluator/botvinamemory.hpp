@@ -7,48 +7,40 @@
 #include <unordered_map>
 #include <stack>
 
-enum VarType {
-  INT,
-  FUNC,
-  VOID
+enum VariableType {
+  INT, // int values
+  FUNC, // for functions
+  VOID // for functions which has to draw
 };
 
 struct Object {
-  using FuncPtr = std::shared_ptr<ast::Node>;
-
-  VarType vtype;
+  VariableType variableType;
 
   int i;
-
-  FuncPtr func;
+  std::shared_ptr<ast::Node> func; //added but not used becouse functions are not implemented
 
   explicit Object(int intval)
-    : vtype(VarType::INT),
-      i(intval) {
-  }
+    : variableType(VariableType::INT),
+      i(intval) {}
 
-  Object(const FuncPtr& funcptr)
-    : vtype(VarType::FUNC),
-      func(funcptr) {
-  }
+  //TODO Constructor for Function objects
 
-  Object():vtype(VarType::VOID){}
+  Object():variableType(VariableType::VOID){} // for drawing functions
 
 };
 
 class BotvinaMemory {
 public:
   using Variable = std::shared_ptr<Object>;
-  using VarSpace = std::unordered_map<std::string, Variable>;
+  using VariableSpace = std::unordered_map<std::string, Variable>;
 
 public:
-  bool isDefined(const std::string& varname) const;
-
+  bool contains(const std::string& varname) const;
   Variable& at(const std::string& varname);
-  void put(const std::string& varname, const Variable& var);
+  void insert(const std::string& varname, const Variable& var);
 
 private:
-  VarSpace global;
+  VariableSpace globalVarSpace;
 };
 
 #endif // MEMORYARENA_H

@@ -46,7 +46,7 @@ struct NodeObject {
       object(ptr) {
   }
 
-  operator bool() const {
+  explicit operator bool() const {
     return (bool)object;
   }
 };
